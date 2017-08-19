@@ -29,6 +29,9 @@
     {"name" : "year",  "type": "year",  "madatory" : false},
     {"name" : "month", "type": "month", "madatory" : false},
     {"name" : "day",   "type": "day",   "madatory" : true},
+  ],
+  "patterns": [
+    "@year@month@day"
   ]
 }
 

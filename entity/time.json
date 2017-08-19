@@ -1,38 +1,41 @@
 
-{
-  "entity" : "time",
-  "choice" : [
-    {"name": "rough-time",  "type" : "rough-time"},
-    {"name": "range-time",  "type" : "range-time"},
-    {"name": "single-time", "type" : "single-time"}
-  ]
-}
+[
+  {
+    "entity" : "time",
+    "choice" : [
+      "rough-time",
+      "range-time",
+      "single-time"
+    ],
+    "model" : "time-model"
+  },
 
-{
-  "entity" : "rough-time",
-  "enum"   : {
-    "source" : "rough-time.csv",
-    "column" : 1
+  {
+    "entity" : "rough-time",
+    "enum"   : {
+      "source"  : "rough-time.csv",
+      "column"  : 1
+    }
+  },
+
+  {
+    "entity" : "range-time",
+    "compound" : [
+      {"name": "from", "type" : "single-time"},
+      {"name": "to",   "type" : "single-time"}
+    ],
+    "patterns": [
+      "@{from}到@{to}",
+      "从@{from}到@{to}",
+      "@{from}至@{to}之间"
+    ]
+  },
+
+  {
+    "entity" : "single-time",
+    "enum"   : {
+      "source"  : "single-time.csv",
+      "column"  : 1
+    }
   }
-}
-
-{
-  "entity" : "range-time",
-  "compound" : [
-    {"name": "from", "type" : "single-time"},
-    {"name": "to",   "type" : "single-time"}
-  ],
-  "patterns": [
-    "@from到@to",
-    "从@from到@to",
-    "@from至@to之间"
-  ]
-}
-
-{
-  "entity" : "single-time",
-  "enum"   : {
-    "source" : "single-time.csv",
-    "column" : 1
-  }
-}
+]
