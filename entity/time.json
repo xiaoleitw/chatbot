@@ -2,16 +2,30 @@
 {
   "entity" : "time",
   "choice" : [
+    {"name": "rough-time",  "type" : "rough-time"},
     {"name": "range-time",  "type" : "range-time"},
     {"name": "single-time", "type" : "single-time"}
   ]
 }
 
 {
+  "entity" : "rough-time",
+  "enum"   : {
+    "source" : "rough-time.csv",
+    "column" : 1
+  }
+}
+
+{
   "entity" : "range-time",
   "compound" : [
-    {"name": "from", "type" : "single-time"}
+    {"name": "from", "type" : "single-time"},
     {"name": "to",   "type" : "single-time"}
+  ],
+  "patterns": [
+    "@from到@to",
+    "从@from到@to",
+    "@from至@to之间"
   ]
 }
 
