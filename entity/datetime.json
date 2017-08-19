@@ -1,0 +1,56 @@
+{
+  "entity" : "datetime",
+  "compound" : [
+    {"name" : "date",  "type": "date",  "optional" : false},
+    {"name" : "time",  "type": "time",  "optional" : true}
+  ]
+}
+
+{
+  "entity" : "date",
+  "choice" : [
+    {"name": "week-day", "type" : "week-day"},
+    {"name": "regular-day", "type": "regular-day"}
+  ]
+}
+
+{
+  "entity" : "week-day",
+  "enum" : {
+    "data-source" : "week-day.csv",
+    "column"      : 1
+  }
+}
+
+{
+  "entity" : "regular_day",
+  "compound" : [
+    {"name" : "year",  "type": "year",  "optional" : true},
+    {"name" : "month", "type": "month", "optional" : true},
+    {"name" : "day",   "type": "day",   "optional" : false},
+  ]
+}
+
+{
+  "entity" : "year",
+  "enum" : {
+    "data-source" : "year.csv",
+    "column"      : 1
+  }
+}
+
+{
+  "entity" : "month",
+  "enum" : {
+    "data-source" : "month.csv",
+    "column"      : 1
+  }
+}
+
+{
+  "entity" : "day",
+  "enum" : {
+    "data-source" : "day.csv",
+    "column"      : 1
+  }
+}

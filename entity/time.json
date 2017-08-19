@@ -1,0 +1,24 @@
+
+{
+  "entity" : "time",
+  "choice" : [
+    {"name": "range-time",  "type" : "range-time"},
+    {"name": "single-time", "type" : "single-time"}
+  ]
+}
+
+{
+  "entity" : "range-time",
+  "compound" : [
+    {"name": "from", "type" : "single-time"}
+    {"name": "to",   "type" : "single-time"}
+  ]
+}
+
+{
+  "entity" : "single-time",
+  "enum"   : {
+    "source" : "single-time.csv",
+    "column" : 1
+  }
+}
