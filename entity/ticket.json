@@ -1,0 +1,9 @@
+[
+  {
+    "entity" : "ticket",
+    "enum"   : {
+      "source"  : "ticket.csv",
+      "column"  : 1
+    }
+  }
+]

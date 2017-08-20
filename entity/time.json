@@ -21,8 +21,8 @@
   {
     "entity" : "range-time",
     "compound" : [
-      {"name": "from", "type" : "single-time"},
-      {"name": "to",   "type" : "single-time"}
+      {"name": "from", "type" : "single-time", "mandatory" : true},
+      {"name": "to",   "type" : "single-time", "mandatory" : true}
     ],
     "patterns": [
       "@{from}到@{to}",

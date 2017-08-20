@@ -1,0 +1,29 @@
+[
+  {
+    "entity" : "general-city",
+    "compound"  : [
+      {"name" : "province", "type" : "province", "mandatory" : false},
+      {"name" : "city",     "type" : "city",     "mandatory" : true}
+    ],
+    "patterns": [
+      "@{province}@{city}",
+      "@{province}@{city}市"
+    ]
+  },
+
+  {
+    "entity" : "province",
+    "enum"   : {
+      "source"  : "cities.csv",
+      "column"  : 2
+    }
+  },
+
+  {
+    "entity" : "city",
+    "enum"   : {
+      "source"  : "cities.csv",
+      "column"  : 1
+    }
+  }
+]

@@ -12,7 +12,7 @@
     "entity" : "week-day",
     "enum" : {
       "source" : "week-day.csv",
-      "column"      : 1
+      "column" : 1
     }
   },
 
@@ -20,19 +20,29 @@
     "entity" : "relative-day",
     "enum" : {
       "source" : "relative-day.csv",
-      "column"      : 1
+      "column" : 1
     }
   },
 
   {
     "entity" : "regular-day",
     "compound" : [
-      {"name" : "year",  "type": "year",  "madatory" : false},
-      {"name" : "month", "type": "month", "madatory" : false},
-      {"name" : "day",   "type": "day",   "madatory" : true}
+      {"name" : "month",  "type": "regular-month",  "mandatory" : false},
+      {"name" : "day",    "type": "day",            "mandatory" : true}
     ],
     "patterns": [
-      "@{year}@{month}@{day}"
+      "@{month}@{day}"
+    ]
+  },
+
+  {
+    "entity" : "regular-month",
+    "compound" : [
+      {"name" : "year",  "type": "year",  "mandatory" : false},
+      {"name" : "month", "type": "month", "mandatory" : true}
+    ],
+    "patterns": [
+      "@{year}@{month}"
     ]
   },
 

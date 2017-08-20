@@ -1,40 +1,24 @@
-{
-  "intent" : "book_ticket",
-  "params" : [
-    {"name" : "datetime", "type" : "datetime", "optional" : false},
-    {"name" : "from", "type" : "city", "optional" : false},
-    {"name" : "to",   "type" : "city", "optional" : false}
-  ]
-}
-
-{
-  "entity" : "datetime",
-  "compound" : [
-    {"name" : "date",  "type": "date",  "optional" : false},
-    {"name" : "time",  "type": "time",  "optional" : true}
-  ]
-}
-
-{
-  "entity" : "date",
-  "choice" : [
-    {"name": "week_day", "type" : "week_day"},
-    {"name": "regular_day", "type": "regular_day"}
-  ]
-}
-
-{
-  "entity" : "regular_day",
-  "compound" : [
-    {"name" : "year",  "type": "year",  "optional" : true},
-    {"name" : "month", "type": "month", "optional" : true},
-    {"name" : "day",   "type": "day",   "optional" : false},
-  ]
-}
-
-{
-  "entity" : "time",
-  "choice" : [
-
-  ]
-}
+[
+  {
+    "entity" : "book_ticket",
+    "compound" : [
+      {"name" : "datetime", "type" : "datetime",         "mandatory" : true},
+      {"name" : "from",     "type" : "general-city",     "mandatory" : false},
+      {"name" : "to",       "type" : "general-city",     "mandatory" : true},
+      {"name" : "ticket",   "type" : "ticket",           "mandatory" : true}
+    ],
+    "patterns": [
+      "我想订@{datetime}@{from}到@{to}的@{ticket}",
+      "帮我看看@{datetime}从@{from}到@{to}的@{ticket}",
+      "查一下@{datetime}从@{from}到@{to}的@{ticket}",
+      "查下@{datetime}到@{to}的@{ticket}",
+      "问下@{datetime}去@{to}的@{ticket}",
+      "查下@{datetime}从@{from}去@{to}的@{ticket}",
+      "帮我看看到@{to}的@{ticket}的情况",
+      "帮我看看到@{to}的@{ticket}还有吗",
+      "帮我看看有没有@{datetime}去@{to}的@{ticket}",
+      "@{datetime}@{from}到@{to}的@{ticket}",
+      "@{datetime}去@{to}的@{ticket}"
+    ]
+  }
+]
