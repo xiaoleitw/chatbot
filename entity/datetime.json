@@ -1,7 +1,12 @@
-{
-  "entity" : "datetime",
-  "compound" : [
-    {"name" : "date",  "type": "date",  "optional" : false},
-    {"name" : "time",  "type": "time",  "optional" : true}
-  ]
-}
+[
+  {
+    "entity" : "datetime",
+    "compound" : [
+      {"name" : "date",  "type": "date",  "mandatory" : true},
+      {"name" : "time",  "type": "time",  "mandatory" : false}
+    ],
+    "patterns": [
+      "@{date}@{time}"
+    ]
+  }
+]

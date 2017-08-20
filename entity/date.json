@@ -1,60 +1,62 @@
-{
-  "entity" : "date",
-  "choice" : [
-    {"name": "week-day",     "type" : "week-day"},
-    {"name": "relative-day", "type" : "relative-day"}
-    {"name": "regular-day",  "type" : "regular-day"}
-  ]
-}
+[
+  {
+    "entity" : "date",
+    "choice" : [
+      "week-day",
+      "relative-day",
+      "regular-day"
+    ]
+  },
 
-{
-  "entity" : "week-day",
-  "enum" : {
-    "data-source" : "week-day.csv",
-    "column"      : 1
+  {
+    "entity" : "week-day",
+    "enum" : {
+      "source" : "week-day.csv",
+      "column"      : 1
+    }
+  },
+
+  {
+    "entity" : "relative-day",
+    "enum" : {
+      "source" : "relative-day.csv",
+      "column"      : 1
+    }
+  },
+
+  {
+    "entity" : "regular-day",
+    "compound" : [
+      {"name" : "year",  "type": "year",  "madatory" : false},
+      {"name" : "month", "type": "month", "madatory" : false},
+      {"name" : "day",   "type": "day",   "madatory" : true}
+    ],
+    "patterns": [
+      "@{year}@{month}@{day}"
+    ]
+  },
+
+  {
+    "entity" : "year",
+    "enum" : {
+      "source" : "year.csv",
+      "column"      : 1
+    }
+  },
+
+  {
+    "entity" : "month",
+    "enum" : {
+      "source" : "month.csv",
+      "column"      : 1
+    }
+  },
+
+  {
+    "entity" : "day",
+    "enum" : {
+      "source" : "day.csv",
+      "column"      : 1
+    }
   }
-}
-
-{
-  "entity" : "relative-day",
-  "enum" : {
-    "data-source" : "relative-day.csv",
-    "column"      : 1
-  }
-}
-
-{
-  "entity" : "regular_day",
-  "compound" : [
-    {"name" : "year",  "type": "year",  "madatory" : false},
-    {"name" : "month", "type": "month", "madatory" : false},
-    {"name" : "day",   "type": "day",   "madatory" : true},
-  ],
-  "patterns": [
-    "@year@month@day"
-  ]
-}
-
-{
-  "entity" : "year",
-  "enum" : {
-    "data-source" : "year.csv",
-    "column"      : 1
-  }
-}
-
-{
-  "entity" : "month",
-  "enum" : {
-    "data-source" : "month.csv",
-    "column"      : 1
-  }
-}
-
-{
-  "entity" : "day",
-  "enum" : {
-    "data-source" : "day.csv",
-    "column"      : 1
-  }
-}
+]
