@@ -2,6 +2,26 @@
   {
     "entity" : "date",
     "choice" : [
+      "single-date",
+      "range-date"
+    ]
+  },
+
+  {
+    "entity" : "range-date",
+    "compound" : [
+      {"name" : "from",  "type": "single-date",  "mandatory" : true},
+      {"name" : "to",    "type": "single-date",  "mandatory" : true}
+    ],
+    "patterns": [
+      "@{from}到@{to}",
+      "@{from}至@{to}",
+      "@{from}到@{to}之间"
+    ]
+  },
+  {
+    "entity" : "single-date",
+    "choice" : [
       "week-day",
       "relative-day",
       "regular-day"
@@ -13,7 +33,8 @@
     "enum" : {
       "source" : "week-day.csv",
       "column" : 1
-    }
+    },
+    "model":false
   },
 
   {
@@ -21,7 +42,8 @@
     "enum" : {
       "source" : "relative-day.csv",
       "column" : 1
-    }
+    },
+    "model":false
   },
 
   {

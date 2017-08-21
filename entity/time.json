@@ -15,7 +15,8 @@
     "enum"   : {
       "source"  : "rough-time.csv",
       "column"  : 1
-    }
+    },
+    "model":false
   },
 
   {
@@ -36,7 +37,8 @@
       "qualified-time",
       "usual-time",
       "exact-time"
-    ]
+    ],
+    "model":false
   },
   {
     "entity" : "qualified-time",

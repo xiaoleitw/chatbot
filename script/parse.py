@@ -82,7 +82,7 @@ def parse_sentence(intent, sentence, pos = 0):
     if tag != 'O':
         result[labels[tag]] = (pos + start, size - start)
 
-    #print(sentence, result)
+    print(sentence, result)
 
     if "compound" in intent:
         handle_compound(intent, result, sentence, pos)
@@ -118,7 +118,7 @@ def check_entity_args(entity, data):
     fields = filter(lambda x: x['mandatory'], entity['compound'])
     for field in fields:
         if field['name'] not in data:
-            print(field['name'], "missing")
+            print(field['name'], "missing:", data)
             sys.exit(1)
 
 ###################################################################
