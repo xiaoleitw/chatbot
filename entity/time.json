@@ -30,11 +30,24 @@
       "@{from}至@{to}之间"
     ]
   },
-
   {
     "entity" : "single-time",
+    "choice" : [
+      "qualified-time",
+      "exact-time"
+    ]
+  },
+  {
+    "entity" : "qualified-time",
     "enum"   : {
-      "source"  : "single-time.csv",
+      "source"  : "qualified-time.csv",
+      "column"  : 1
+    }
+  },
+  {
+    "entity" : "exact-time",
+    "enum"   : {
+      "source"  : "exact-time.csv",
       "column"  : 1
     }
   }
