@@ -13,6 +13,8 @@
       "查一下@{datetime}从@{from}到@{to}的@{ticket}",
       "查下@{datetime}到@{to}的@{ticket}",
       "问下@{datetime}去@{to}的@{ticket}",
+      "看下@{datetime}去@{to}的@{ticket}",
+      "看下有@{datetime}去@{to}的@{ticket}吗",
       "查下@{datetime}从@{from}去@{to}的@{ticket}",
       "帮我看看到@{to}的@{ticket}的情况",
       "帮我看看到@{to}的@{ticket}还有吗",

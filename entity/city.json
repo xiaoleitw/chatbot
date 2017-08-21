@@ -1,29 +1,94 @@
 [
+
   {
     "entity" : "general-city",
+    "choice" : [
+      "province-city",
+      "muni-city"
+    ]
+  },
+
+  {
+    "entity" : "province-city",
     "compound"  : [
       {"name" : "province", "type" : "province", "mandatory" : false},
       {"name" : "city",     "type" : "city",     "mandatory" : true}
     ],
     "patterns": [
-      "@{province}@{city}",
-      "@{province}@{city}市"
+      "@{province}@{city}"
     ]
   },
 
   {
     "entity" : "province",
+    "choice" : [
+      "normal-province",
+      "auto-prov",
+      "huge-muni-city"
+    ]
+  },
+
+  {
+    "entity" : "muni-city",
+    "choice" : [
+      "simple-muni-city",
+      "huge-muni-city"
+    ]
+  },
+
+  {
+    "entity" : "simple-muni-city",
     "enum"   : {
-      "source"  : "cities.csv",
-      "column"  : 2
+      "source"  : "simple-muni-city.csv",
+      "column"  : 1
+    },
+    "patterns" : [
+      "@{this}",
+      "@{this}市"
+    ]
+  },
+
+  {
+    "entity" : "huge-muni-city",
+    "enum"   : {
+      "source"  : "huge-muni-city.csv",
+      "column"  : 1
+    },
+    "patterns" : [
+      "@{this}",
+      "@{this}市"
+    ]
+  },
+
+  {
+    "entity" : "auto-prov",
+    "enum"   : {
+      "source"  : "auto-prov.csv",
+      "column"  : 1
     }
+  },
+
+  {
+    "entity" : "normal-province",
+    "enum"   : {
+      "source"  : "normal-province.csv",
+      "column"  : 1
+    },
+    "patterns": [
+      "@{this}",
+      "@{this}省"
+    ]
   },
 
   {
     "entity" : "city",
     "enum"   : {
-      "source"  : "cities.csv",
+      "source"  : "city.csv",
       "column"  : 1
-    }
+    },
+    "patterns": [
+      "@{this}",
+      "@{this}市"
+    ]
   }
 ]

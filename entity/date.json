@@ -31,7 +31,8 @@
       {"name" : "day",    "type": "day",            "mandatory" : true}
     ],
     "patterns": [
-      "@{month}@{day}"
+      "@{month}@{day}",
+      "@{month}@{day}左右"
     ]
   },
 

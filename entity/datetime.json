@@ -6,7 +6,9 @@
       {"name" : "time",  "type": "time",  "mandatory" : false}
     ],
     "patterns": [
-      "@{date}@{time}"
+      "@{date}@{time}",
+      "@{date}",
+      "@{time}"
     ]
   }
 ]
