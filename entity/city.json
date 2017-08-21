@@ -25,7 +25,8 @@
       "normal-province",
       "auto-prov",
       "huge-muni-city"
-    ]
+    ],
+    "model":false
   },
 
   {
@@ -33,7 +34,8 @@
     "choice" : [
       "simple-muni-city",
       "huge-muni-city"
-    ]
+    ],
+    "model":false
   },
 
   {
@@ -89,6 +91,7 @@
     "patterns": [
       "@{this}",
       "@{this}市"
-    ]
+    ],
+    "model":false
   }
 ]

@@ -52,7 +52,8 @@
     "enum" : {
       "source" : "year.csv",
       "column"      : 1
-    }
+    },
+    "model" : false
   },
 
   {
@@ -60,7 +61,8 @@
     "enum" : {
       "source" : "month.csv",
       "column"      : 1
-    }
+    },
+    "model" : false
   },
 
   {
@@ -68,6 +70,7 @@
     "enum" : {
       "source" : "day.csv",
       "column"      : 1
-    }
+    },
+    "model":false
   }
 ]
