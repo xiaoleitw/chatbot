@@ -1,26 +1,18 @@
 [
   {
-    "entity" : "date",
-    "choice" : [
-      "single-date",
-      "range-date"
-    ]
+    "entity" : "any-date",
+    "templates": [
+      { "name" : "single",         "model" : false },
+      { "name" : "range",          "model" : true  },
+      { "name" : "centered-range", "model" : true  },
+      { "name" : "or-list",        "model" : true  },
+      { "name" : "and-list",       "model" : true  }
+    ],
+    "source-type" : "date"
   },
 
   {
-    "entity" : "range-date",
-    "compound" : [
-      {"name" : "from",  "type": "single-date",  "mandatory" : true},
-      {"name" : "to",    "type": "single-date",  "mandatory" : true}
-    ],
-    "patterns": [
-      "@{from}到@{to}",
-      "@{from}至@{to}",
-      "@{from}到@{to}之间"
-    ]
-  },
-  {
-    "entity" : "single-date",
+    "entity" : "date",
     "choice" : [
       "week-day",
       "relative-day",
@@ -49,20 +41,19 @@
   {
     "entity" : "regular-day",
     "compound" : [
-      {"name" : "month",  "type": "regular-month",  "mandatory" : false},
-      {"name" : "day",    "type": "day",            "mandatory" : true}
+      {"name" : "month",  "type": "regular-month",  "required" : false},
+      {"name" : "day",    "type": "day" }
     ],
     "patterns": [
-      "@{month}@{day}",
-      "@{month}@{day}左右"
+      "@{month}@{day}"
     ]
   },
 
   {
     "entity" : "regular-month",
     "compound" : [
-      {"name" : "year",  "type": "year",  "mandatory" : false},
-      {"name" : "month", "type": "month", "mandatory" : true}
+      {"name" : "year",  "type": "year",  "required" : false},
+      {"name" : "month", "type": "month", "required" : true}
     ],
     "patterns": [
       "@{year}@{month}"
@@ -84,14 +75,15 @@
       "source" : "month.csv",
       "column"      : 1
     },
-    "model" : false
+    "model"    : false,
+    "strict"   : true
   },
 
   {
     "entity" : "day",
     "enum" : {
       "source" : "day.csv",
-      "column"      : 1
+      "column" : 1
     },
     "model":false
   }

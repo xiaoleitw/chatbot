@@ -2,7 +2,7 @@
   {
     "entity" : "singer-only",
     "compound" : [
-      {"name":"singer", "type":"singer", "mandatory":true}
+      {"name":"singer", "type":"singer", "required":true}
     ],
     "patterns" : [
       "帮我找首@{singer}的歌",

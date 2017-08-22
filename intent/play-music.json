@@ -2,14 +2,15 @@
   {
     "entity" : "play-music",
     "compound" : [
-      {"name" : "singer",   "type":"singer",        "mandatory" : true},
-      {"name" : "song",     "type":"song",          "mandatory" : false},
-      {"name" : "album",    "type":"music-album",   "mandatory" : false},
-      {"name" : "genre",    "type":"genre",         "mandatory" : false},
+      {"name" : "singer",   "type":"singer",        "required" : true},
+      {"name" : "song",     "type":"song",          "required" : false},
+      {"name" : "album",    "type":"music-album",   "required" : false},
+      {"name" : "genre",    "type":"genre",         "required" : false},
     ],
     "patterns" : [
       "帮我找首@{singer}的歌",
       "我想听@{singer}的歌",
+      "找下@{singer}的新歌"
       "找首@{singer}的歌",
       "播放@{singer}的歌",
       "播放@{singer}的音乐",

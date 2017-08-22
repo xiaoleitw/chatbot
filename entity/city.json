@@ -11,8 +11,8 @@
   {
     "entity" : "province-city",
     "compound"  : [
-      {"name" : "province", "type" : "province", "mandatory" : false},
-      {"name" : "city",     "type" : "city",     "mandatory" : true}
+      {"name" : "province", "type" : "province", "required" : false},
+      {"name" : "city",     "type" : "city",     "required" : true}
     ],
     "patterns": [
       "@{province}@{city}"

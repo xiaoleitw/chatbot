@@ -1,0 +1,29 @@
+[
+  {
+    "entity" : "book-ticket",
+    "class"  : "intent",
+    "compound" : [
+      {"name" : "date",     "type" : "datetime",         "required" : true,    "multiple":true, "priority":2, "question": "您要订那天的票？"},
+      {"name" : "from",     "type" : "general-city",     "required" : false},
+      {"name" : "to",       "type" : "general-city",     "required" : true,    "priority":1, "question": "您要订到哪里的票？"},
+      {"name" : "ticket",   "type" : "ticket",           "required" : true,    "priority":0, "question": "请问您要订什么票？"}
+    ],
+    "patterns": [
+      "我想订@{date}@{from}到@{to}的@{ticket}",
+      "订@{date}@{from}至@{to}的@{ticket}",
+      "帮我看看@{date}从@{from}到@{to}的@{ticket}",
+      "帮我订张@{date}@{from}到@{to}的@{ticket}",
+      "查一下@{date}从@{from}至@{to}的@{ticket}",
+      "查下@{date}到@{to}的@{ticket}",
+      "问下@{date}去@{to}的@{ticket}",
+      "看下@{date}去@{to}的@{ticket}",
+      "看下有@{date}去@{to}的@{ticket}吗",
+      "查下@{date}@{from}至@{to}的@{ticket}",
+      "帮我看看到@{to}的@{ticket}",
+      "帮我看看有没有@{date}去@{to}的@{ticket}",
+      "帮我订张@{from}到@{to}的@{ticket}",
+      "@{date}@{from}到@{to}的@{ticket}",
+      "@{date}去@{to}的@{ticket}"
+    ]
+  }
+]

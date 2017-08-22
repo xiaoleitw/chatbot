@@ -2,13 +2,11 @@
   {
     "entity" : "datetime",
     "compound" : [
-      {"name" : "date",  "type": "date",  "mandatory" : true},
-      {"name" : "time",  "type": "time",  "mandatory" : false}
+      { "name" : "date",  "type": "date" },
+      { "name" : "time",  "type": "time" }
     ],
     "patterns": [
-      "@{date}@{time}",
-      "@{date}",
-      "@{time}"
+      "@{date}@{time}"
     ]
   }
 ]
