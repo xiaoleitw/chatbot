@@ -15,7 +15,8 @@
       {"name" : "city",     "type" : "city",     "required" : true}
     ],
     "patterns": [
-      "@{province}@{city}"
+      "@{province}@{city}",
+      "@{city}"
     ]
   },
 

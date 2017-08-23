@@ -45,7 +45,7 @@
 
   {
     "template"     : "range",
-    "result-type"  : "tuple",
+    "result-type"  : "dict",
     "parameters"   : [ "from", "to" ],
     "patterns": [
       [ { "once" : "从@{from}到@{to}" } ],

@@ -197,14 +197,6 @@ def generate_labelled_sample(samples, labels):
 
     return all_samples
 
-def label_template_samples(samples):
-    template = all_templates[samples[0]]
-
-    labels = {}
-    for p, i in zip(template['parameters'], range(0, len(template['parameters']))):
-        labels['@{' + p + '}'] = label_str[i]
-
-    return generate_labelled_sample(samples[1], labels)
 
 def flattern_generate_sample_by_template(template_name, data_list, n_samples):
     _, samples = generate_sample_by_template(template_name, data_list, n_samples)
@@ -226,7 +218,7 @@ def generate_classified_samples(samples):
     return result
 
 ######################################################################################################
-class Entity:
+class SampleObject:
     def generate_samples(self, n_samples):
         raise NotImplementedError("SHOULD NOT BE HERE: generate_samples")
         #print("SHOULD NOT BE HERE: generate_samples")
@@ -243,7 +235,7 @@ class Entity:
         raise NotImplementedError("SHOULD NOT BE HERE: generate_test_samples")
 
 ######################################################################################################
-class EnumEntity(Entity):
+class EnumEntity(SampleObject):
     def __init__(self, name):
         entity = entity_dict[name]
         self.name = name
@@ -274,9 +266,10 @@ class EnumEntity(Entity):
         return result
 
 ######################################################################################################
-class ChoiceEntity(Entity):
+class ChoiceEntity(SampleObject):
     def __init__(self, name):
         entity = entity_dict[name]
+        self.name = name
         self.children = {}
         for child in entity['choice']:
             self.children[child] = create_entity(child)
@@ -312,7 +305,7 @@ class ChoiceEntity(Entity):
         return generate_classified_samples(samples)
 
 ######################################################################################################
-class CompoundEntity(Entity):
+class CompoundEntity(SampleObject):
     def __init__(self, name):
         self.name = name
         entity = entity_dict[name]
@@ -325,7 +318,7 @@ class CompoundEntity(Entity):
         self.labels = {}
         for c, i in zip(self.children, range(0, len(self.children))):
             self.labels['@{' + c + '}'] = label_str[i]
-            self.result_labels.append([c, label_str[i]])
+            self.result_labels.append([label_str[i], c])
 
     def __make_sample(self, template, sub_samples, n):
         sample = []
@@ -367,7 +360,7 @@ class CompoundEntity(Entity):
         return generate_unlabelled_sample(samples)
 
 ######################################################################################################
-class TemplateEntity(Entity):
+class TemplateEntity(SampleObject):
     def __init__(self, name):
         entity = entity_dict[name]
         self.name = name
@@ -394,25 +387,55 @@ class TemplateEntity(Entity):
     def generate_flat_samples(self, n_samples):
         return [ s[1] for s in self.generate_samples(n_samples)]
 
-    def generated_label_table(self):
+    def __generated_label_table(self):
         return [[self.labels[c], c] for c in self.labels]
 
     def generate_train_samples(self, n_samples, add_noise=False):
         samples = self.generate_samples(n_samples)
-        return self.generated_label_table(), generate_labelled_classified_samples(samples, self.labels)
+        return self.__generated_label_table(), generate_labelled_classified_samples(samples, self.labels)
 
     def generate_test_samples(self, n_samples, add_noise=False):
         samples = self.generate_samples(n_samples)
         return generate_classified_samples(samples)
 
 ######################################################################################################
+class Template(SampleObject):
+    def __init__(self, name, parent):
+        self.name = parent + '/' + name
+        self.raw_name = name
+
+        template = all_templates[name]
+
+        self.result_labels = []
+        self.labels = {}
+        for p, i in zip(template['parameters'], range(0, len(template['parameters']))):
+            self.labels['@{' + p + '}'] = label_str[i]
+            self.result_labels.append([label_str[i], p])
+
+        self.data_src = create_entity(entity_dict[parent]['source-type'])
+
+    def generate_samples(self, n_samples):
+        data_list = self.data_src.generate_flat_samples(n_samples * 2)
+        _, samples = generate_sample_by_template(self.raw_name, data_list, n_samples)
+        return samples
+
+    def generate_flat_samples(self, n_samples):
+        data_list = self.data_src.generate_flat_samples(n_samples * 2)
+        return flattern_generate_sample_by_template(self.raw_name, data_list, n_samples)
+
+    def generate_train_samples(self, n_samples, add_noise=False):
+        samples = self.generate_samples(n_samples)
+        return self.result_labels, generate_labelled_sample(samples, self.labels)
+
+    def generate_test_samples(self, n_samples, add_noise=False):
+        samples = self.generate_samples(n_samples)
+        return generate_unlabelled_sample(samples)
+
+
+######################################################################################################
 load_all_entity()
 
-def create_entity(name):
-    if name not in entity_dict:
-        print("ERROR: ", name, "does not exit")
-        return None
-
+def __create_entity(name):
     entity = entity_dict[name]
     if 'enum' in entity:
         return EnumEntity(name)
@@ -424,6 +447,12 @@ def create_entity(name):
         return TemplateEntity(name)
 
     return None
+
+def create_entity(name):
+    if name in entity_dict:
+        return __create_entity(name)
+
+    exit(1)
 
 def do_write_csv_data(entity_name, samples, ty):
     path = train_path + entity_name
@@ -443,22 +472,46 @@ def write_samples(entity_name, samples, ty):
                 my_writer.writerow(i)
             my_writer.writerow([""])
 
-def generate_train_samples(entity, n_samples):
-    labels, samples = entity.generate_train_samples(n_samples)
-    do_write_csv_data(entity.name, labels, 'labels')
-    write_samples(entity.name, samples, 'train')
+def generate_train_samples(obj, n_samples):
+    labels, samples = obj.generate_train_samples(n_samples)
+    do_write_csv_data(obj.name, labels, 'labels')
+    write_samples(obj.name, samples, 'train')
 
-def generate_test_samples(entity, n_samples):
-    samples = entity.generate_test_samples(n_samples)
-    write_samples(entity.name, samples, 'test')
+def generate_test_samples(obj, n_samples):
+    samples = obj.generate_test_samples(n_samples)
+    write_samples(obj.name, samples, 'test')
 
-def make_training_artifact(entity_name, n_train, n_test):
+def do_generate_artifacts(obj, n_train, n_test):
+    generate_train_samples(obj, n_train)
+    generate_test_samples(obj, n_test)
+
+def make_entity_training_artifacts(entity_name, n_train, n_test):
     entity = create_entity(entity_name)
-    generate_train_samples(entity, n_train)
-    generate_test_samples(entity, n_test)
+    do_generate_artifacts(entity, n_train, n_test)
 
-make_training_artifact('any-date', 10000, 100)
-#make_training_artifact('book-ticket', 20000, 100)
+def make_template_training_artifacts(template_name, parent_name, n_train=1000, n_test=10):
+    template = Template(template_name, parent_name)
+    do_generate_artifacts(template, n_train, n_test)
+
+
+make_template_training_artifacts('centered-range', 'any-date', 10000)
+make_template_training_artifacts('range', 'any-date', 10000)
+make_template_training_artifacts('or-list', 'any-date', 10000)
+make_template_training_artifacts('and-list', 'any-date', 10000)
+
+make_template_training_artifacts('centered-range', 'any-time', 10000)
+make_template_training_artifacts('range', 'any-time', 10000)
+
+make_entity_training_artifacts('any-time', 10000, 100)
+make_entity_training_artifacts('any-date', 10000, 100)
+make_entity_training_artifacts('book-ticket', 20000, 100)
+make_entity_training_artifacts('time', 20000, 100)
+make_entity_training_artifacts('date', 20000, 100)
+make_entity_training_artifacts('regular-day', 10000, 100)
+make_entity_training_artifacts('regular-month', 10000, 100)
+make_entity_training_artifacts('general-city', 10000, 100)
+make_entity_training_artifacts('province-city', 10000, 100)
+
 
 #entity = create_entity('book-ticket')
 #print(entity.generate_train_samples(1))
