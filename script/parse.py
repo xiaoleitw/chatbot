@@ -6,6 +6,7 @@ import sys
 import csv
 import json
 import glob
+import pprint
 
 train_path = "../train/"
 entity_path = "../entity/"
@@ -51,6 +52,11 @@ def read_labels(path):
 
     return result
 
+def get_param(sentence, start, pos, end):
+    s = pos + start
+    l = end - start
+    return ((s, l), sentence[start:end])
+
 ################################################################################
 class Parser:
     def __init__(self, name):
@@ -65,7 +71,7 @@ class Parser:
         return self.name
 
     ############################################################################
-    def parse_content(self, pos, container):
+    def parse_content(self, sentence, pos, container):
         size = self.tagger.size()
         tag = 'O'
         start = 0
@@ -74,24 +80,24 @@ class Parser:
             new_tag = self.tagger.y2(i)
             if tag != new_tag:
                 if tag != 'O':
-                    container(tag, (pos + start, i - start))
+                    container(tag, get_param(sentence, start, pos, i))
                     #result[self.labels[tag]] = (pos + start, i - start)
                 tag = new_tag
                 start = i
 
         if tag != 'O':
-            container(tag, (pos + start, size - start))
+            container(tag, get_param(sentence, start, pos, size))
+            #container(tag, (pos + start, size - start))
             #@result[self.labels[tag]] = (pos + start, size - start)
 
     ############################################################################
-    def parse_dict(self, pos):
+    def parse_dict(self, sentence, pos):
         result = {}
 
         def assign(tag, pos): result[self.labels[tag]] = pos
 
-        self.parse_content(pos, assign)
+        self.parse_content(sentence, pos, assign)
 
-        print(result)
         return result
 
     ############################################################################
@@ -120,7 +126,7 @@ class IntentParser(Parser):
         self.entity = intent
 
     def do_parse(self, sentence, pos):
-        return self.deep_parse(self.parse_dict(pos), sentence, pos)
+        return self.deep_parse(self.parse_dict(sentence, pos), sentence, pos)
 
     def deep_parse(self, result, sentent, pos):
         raise NotImplementedError("SHOULD NOT BE HERE: deep_parse")
@@ -148,7 +154,7 @@ class CompoundIntentParser(IntentParser):
     def deep_parse(self, data, sentence, pos):
         for child in self.children:
             if child in data:
-                start, l = data[child]
+                start, l = data[child][0]
                 parser = self.children[child]
                 if parser == None:
                     print("null parser: ", child)
@@ -215,8 +221,7 @@ class TemplateIntentParser(IntentParser):
             if c in self.children:
                data[c] = self.children[c].parse_sentence(sentence, pos)
             else:
-               s, l = data[c]
-               print(data[c], sentence, pos)
+               s, l = data[c][0]
                data[c] = self.parser.parse_sentence(sentence[:l], pos)
 
         return data
@@ -229,47 +234,51 @@ class TemplateParser(Parser):
         self.parser = parser
 
 
-    def __parse_list(self, pos):
+    def __parse_list(self, sentence, pos):
         result = []
 
         def assign(tag, pos): result.append(pos)
 
-        self.parse_content(pos, assign)
+        self.parse_content(sentence, pos, assign)
 
         return result
 
-    def __parse_value(self, pos):
+    def __parse_value(self, sentence, pos):
         value = []
 
         def assign(tag, pos): value.append(pos)
 
-        self.parse_content(pos, assign)
+        self.parse_content(sentence, pos, assign)
 
         return value[0]
 
     def handle_value(self, sentence, pos):
-        value = self.__parse_value(pos)
+        value = self.__parse_value(sentence, pos)
         if not self.parser:
             return value
 
-        start = pos + value[0]
-        return self.parser.parse_sentence(sentence[start:start+value[1]], start)
+        s = pos + value[0]
+
+        return self.parser.parse_sentence(sentence[s:s+value[1]], s)
+
+    def __parse(self, sentence, pos, value):
+        s = value[0]
+        return self.parser.parse_sentence(sentence[s[0] - pos : s[0] - pos + s[1]], s[0])
 
     def handle_list(self, sentence, pos):
-        values = self.__parse_list(pos)
+        values = self.__parse_list(sentence, pos)
         if not self.parser:
             return values
 
-        print(sentence, values)
-        return [self.parser.parse_sentence(sentence[i[0] - pos : i[0] - pos + i[1]], i[0]) for i in values]
+        return [self.__parse(sentence, pos, i) for i in values]
 
     def handle_dict(self, sentence, pos):
-        data = self.parse_dict(pos)
+        data = self.parse_dict(sentence, pos)
         if not self.parser:
             return data
 
         for c in data:
-            v = data[c]
+            v = data[c][0]
             data[c] = self.parser.parse_sentence(sentence[v[0] - pos : v[0] - pos + v[1]], v[0])
 
         return data
@@ -365,8 +374,9 @@ load_all_entity()
 intent_name = sys.argv[1]
 load_intent(intent_name)
 
-result = get_parser(intent_name).parse_sentence(sentence, 0)
+result = {'sentence' : sentence}
+result['paramters'] = get_parser(intent_name).parse_sentence(sentence, 0)
 
-result['sentence'] = sentence
+pp = pprint.PrettyPrinter(depth=10)
 
-print(result)
+pp.pprint(result)
