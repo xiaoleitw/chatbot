@@ -2,7 +2,7 @@
   {
     "entity" : "datetime",
     "compound" : [
-      { "name" : "date",  "type": "date" },
+      { "name" : "date",  "type": "any-date" },
       { "name" : "time",  "type": "time" }
     ],
     "patterns": [

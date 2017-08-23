@@ -5,24 +5,22 @@
       {"name" : "singer",   "type":"singer",        "required" : true},
       {"name" : "song",     "type":"song",          "required" : false},
       {"name" : "album",    "type":"music-album",   "required" : false},
-      {"name" : "genre",    "type":"genre",         "required" : false},
+      {"name" : "genre",    "type":"genre",         "required" : false}
     ],
     "patterns" : [
       "帮我找首@{singer}的歌",
       "我想听@{singer}的歌",
-      "找下@{singer}的新歌"
+      "找下@{singer}的新歌",
       "找首@{singer}的歌",
       "播放@{singer}的歌",
       "播放@{singer}的音乐",
-
       "我想听@{singer}的@{song}",
       "我想听@{singer}@{song}",
       "播放@{singer}@{song}",
       "@{singer}@{song}",
       "@{singer}的@{song}",
-
       "帮我找找@{album}",
-      "我想听@{album}",
+      "我想听@{album}"
     ]
   },
 

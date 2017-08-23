@@ -7,13 +7,25 @@ import sys
 import glob
 from random import choice
 import random
+import os
+import errno
 
 entity_path = "../entity/"
 csv_path    = "../csv/"
+train_path = "../train/"
+intent_path = "../intent/"
 
 all_templates = {}
 csv_samples_dict = {}
 entity_dict = {}
+
+def make_path(path):
+    if not os.path.exists(path):
+        try:
+            os.makedirs(path)
+        except OSError as error:
+            if error.errno != errno.EEXIST:
+                raise
 
 ############################################################################
 def split_pattern(pattern):
@@ -79,7 +91,7 @@ def load_entity(file):
     load_json(entity_path, file)
 
 def load_all_entity():
-    files = glob.glob(entity_path + r'*.json')
+    files = glob.glob(entity_path + r'*.json') + glob.glob(intent_path + r'*.json')
     for i in files:
         do_load_json(i)
 
@@ -149,36 +161,41 @@ def generate_sample_by_template(template_name, data_list, n_samples):
 
     return template_name, samples[:n_samples]
 
-label_str = ['A', 'B', 'C', 'D', 'E']
+label_str = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H','I','J','K','L','M','N','P','Q','R']
 
 def generate_unlabelled_sample(samples):
-    result = []
+    all_samples = []
     for sample in samples:
         tags = sample[0]
         words = sample[1]
+        result = []
         for word in words:
             result += [w for w in word]
-        result += [['。']]
+        all_samples.append(result)
 
-    return result
+
+    return all_samples
 
 def generate_labelled_sample(samples, labels):
-    result = []
+    all_samples = []
     for sample in samples:
         tags = sample[0]
         words = sample[1]
         start = 0
+        result = []
         for tag in tags:
             index = tag[0]
             for s in range(start, index):
-                result += [(w, 'O') for w in words[s]]
-            result += [(w, labels[tag[1]]) for w in words[index]]
+                result += [[w, 'O'] for w in words[s]]
+            result += [[w, labels[tag[1]]] for w in words[index]]
             start = index + 1
         for s in range(start, len(words)):
-            result += [(w, 'O') for w in words[s]]
-        result += [['。', 'O']]
+            result += [[w, 'O'] for w in words[s]]
 
-    return result
+        all_samples.append(result)
+
+
+    return all_samples
 
 def label_template_samples(samples):
     template = all_templates[samples[0]]
@@ -193,22 +210,18 @@ def flattern_generate_sample_by_template(template_name, data_list, n_samples):
     _, samples = generate_sample_by_template(template_name, data_list, n_samples)
     return ["".join(sample[1]) for sample in samples]
 
-def add_suffix_to_sample(sample):
-    return sample + [['。', 'O']]
-
 def generate_labelled_classified_samples(samples, labels):
     result = []
     for sample in samples:
         label = labels[sample[0]]
-        result += add_suffix_to_sample([[c, label] for c in sample[1]])
+        result.append([[c, label] for c in sample[1]])
 
     return result
 
 def generate_classified_samples(samples):
     result = []
     for sample in samples:
-        result += [[c] for c in sample[1]]
-        result += [['。']]
+        result.append([[c] for c in sample[1]])
 
     return result
 
@@ -248,14 +261,15 @@ class EnumEntity(Entity):
         samples = self.generate_samples(n_samples)
         result = []
         for sample in samples:
-            result += add_suffix_to_sample([[c, 'A'] for c in sample])
-        return result
+            result.append([[c, 'A'] for c in sample])
+
+        return ('A', self.name), result
 
     def generate_test_samples(self, n_samples, add_noise=False):
-        amples = self.generate_samples(n_samples)
+        samples = self.generate_samples(n_samples)
         result = []
         for sample in samples:
-            result += add_suffix_to_sample([[c] for c in sample])
+            result.append([[c] for c in sample])
 
         return result
 
@@ -290,7 +304,8 @@ class ChoiceEntity(Entity):
         for c, i in zip(self.children, range(0, len(self.children))):
             labels[c] = label_str[i]
 
-        return generate_labelled_classified_samples(samples, labels)
+
+        return [[labels[c], c] for c in labels], generate_labelled_classified_samples(samples, labels)
 
     def generate_test_samples(self, n_samples, add_noise=False):
         samples = self.generate_samples(n_samples)
@@ -299,11 +314,18 @@ class ChoiceEntity(Entity):
 ######################################################################################################
 class CompoundEntity(Entity):
     def __init__(self, name):
+        self.name = name
         entity = entity_dict[name]
         self.templates = entity['patterns']
         self.children = {}
         for child in entity['compound']:
             self.children[child['name']] = create_entity(child['type'])
+
+        self.result_labels = []
+        self.labels = {}
+        for c, i in zip(self.children, range(0, len(self.children))):
+            self.labels['@{' + c + '}'] = label_str[i]
+            self.result_labels.append([c, label_str[i]])
 
     def __make_sample(self, template, sub_samples, n):
         sample = []
@@ -338,12 +360,7 @@ class CompoundEntity(Entity):
 
     def generate_train_samples(self, n_samples, add_noise=False):
         samples = self.generate_samples(n_samples)
-
-        labels = {}
-        for c, i in zip(self.children, range(0, len(self.children))):
-            labels['@{' + c + '}'] = label_str[i]
-
-        return generate_labelled_sample(samples, labels)
+        return self.result_labels, generate_labelled_sample(samples, self.labels)
 
     def generate_test_samples(self, n_samples, add_noise=False):
         samples = self.generate_samples(n_samples)
@@ -353,8 +370,13 @@ class CompoundEntity(Entity):
 class TemplateEntity(Entity):
     def __init__(self, name):
         entity = entity_dict[name]
+        self.name = name
         self.child = create_entity(entity['source-type'])
         self.templates = entity['templates']
+
+        self.labels = {}
+        for c, i in zip(self.templates, range(0, len(self.templates))):
+            self.labels[c['name']] = label_str[i]
 
     def generate_samples(self, n_samples):
         src_list = self.child.generate_flat_samples(n_samples)
@@ -372,20 +394,20 @@ class TemplateEntity(Entity):
     def generate_flat_samples(self, n_samples):
         return [ s[1] for s in self.generate_samples(n_samples)]
 
+    def generated_label_table(self):
+        return [[self.labels[c], c] for c in self.labels]
+
     def generate_train_samples(self, n_samples, add_noise=False):
         samples = self.generate_samples(n_samples)
-
-        labels = {}
-        for c, i in zip(self.templates, range(0, len(self.templates))):
-            labels[c['name']] = label_str[i]
-
-        return generate_labelled_classified_samples(samples, labels)
+        return self.generated_label_table(), generate_labelled_classified_samples(samples, self.labels)
 
     def generate_test_samples(self, n_samples, add_noise=False):
         samples = self.generate_samples(n_samples)
         return generate_classified_samples(samples)
 
 ######################################################################################################
+load_all_entity()
+
 def create_entity(name):
     if name not in entity_dict:
         print("ERROR: ", name, "does not exit")
@@ -403,6 +425,40 @@ def create_entity(name):
 
     return None
 
-load_all_entity()
-entity = create_entity('any-date')
-print(entity.generate_test_samples(20))
+def do_write_csv_data(entity_name, samples, ty):
+    path = train_path + entity_name
+    make_path(path)
+    with open(path + "/" + ty + '.data', 'w', encoding='utf-8') as csvfile:
+        my_writer = csv.writer(csvfile, delimiter='\t',lineterminator='\n')
+        for i in samples:
+            my_writer.writerow(i)
+
+def write_samples(entity_name, samples, ty):
+    path = train_path + entity_name
+    make_path(path)
+    with open(path + "/" + ty + '.data', 'w', encoding='utf-8') as csvfile:
+        my_writer = csv.writer(csvfile, delimiter='\t',lineterminator='\n')
+        for sample in samples:
+            for i in sample:
+                my_writer.writerow(i)
+            my_writer.writerow([""])
+
+def generate_train_samples(entity, n_samples):
+    labels, samples = entity.generate_train_samples(n_samples)
+    do_write_csv_data(entity.name, labels, 'labels')
+    write_samples(entity.name, samples, 'train')
+
+def generate_test_samples(entity, n_samples):
+    samples = entity.generate_test_samples(n_samples)
+    write_samples(entity.name, samples, 'test')
+
+def make_training_artifact(entity_name, n_train, n_test):
+    entity = create_entity(entity_name)
+    generate_train_samples(entity, n_train)
+    generate_test_samples(entity, n_test)
+
+make_training_artifact('any-date', 10000, 100)
+#make_training_artifact('book-ticket', 20000, 100)
+
+#entity = create_entity('book-ticket')
+#print(entity.generate_train_samples(1))

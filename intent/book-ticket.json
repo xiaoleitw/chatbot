@@ -22,6 +22,10 @@
       "帮我看看到@{to}的@{ticket}",
       "帮我看看有没有@{date}去@{to}的@{ticket}",
       "帮我订张@{from}到@{to}的@{ticket}",
+      "@{date}从@{from}到@{to}的@{ticket}",
+      "@{date}@{from}去@{to}的@{ticket}",
+      "@{date}去@{to}的@{ticket}",
+      "@{date}到@{to}的@{ticket}",
       "@{date}@{from}到@{to}的@{ticket}",
       "@{date}去@{to}的@{ticket}"
     ]
