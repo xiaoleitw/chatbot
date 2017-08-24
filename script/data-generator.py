@@ -114,7 +114,7 @@ def make_test_noise():
     num = choice(range(1,5,1))
     return [[choice(noise_lib)] for i in range(num)]
 
-######################################################################################################
+################################################################################
 def generate_template_data(data_list, template_name, n_samples):
     if template_name not in all_templates:
         print("template", template_name, "does not exist")
@@ -123,7 +123,7 @@ def generate_template_data(data_list, template_name, n_samples):
     template = all_templates[template_name]
     #print(template)
 
-######################################################################################################
+################################################################################
 #print(all_templates['or-list'])
 class SingleSampleGenerator:
     def __init__(self, pattern, data_list, param_list):
@@ -179,7 +179,7 @@ def generate_sample_by_template(template_name, data_list, n_samples):
 
     return template_name, samples[:n_samples]
 
-label_str = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H','I','J','K','L','M','N','P','Q','R']
+label_str = ['A', 'B', 'C', 'D', 'F', 'G', 'H','I','J','K','L','M','N','P','Q','R']
 
 def generate_unlabelled_sample(samples):
     all_samples = []
@@ -206,12 +206,12 @@ def generate_labelled_sample(samples, labels):
             for s in range(start, index):
                 result += [[w, 'O'] for w in words[s]]
             result += [[w, labels[tag[1]]] for w in words[index]]
+            if len(result) > 0: result[-1][1] = result[-1][1]+'E'
             start = index + 1
         for s in range(start, len(words)):
             result += [[w, 'O'] for w in words[s]]
 
         all_samples.append(result)
-
 
     return all_samples
 
@@ -240,16 +240,14 @@ def add_train_noise(samples):
 
 def add_test_noise(samples):
     return [make_test_noise() + sample + make_test_noise() for sample in samples]
-######################################################################################################
+
+################################################################################
 class SampleObject:
     def generate_samples(self, n_samples):
         raise NotImplementedError("SHOULD NOT BE HERE: generate_samples")
-        #print("SHOULD NOT BE HERE: generate_samples")
-
 
     def generate_flat_samples(self, n_samples):
         raise NotImplementedError("SHOULD NOT BE HERE: generate_flat_samples")
-
 
     def generate_train_samples(self, n_samples, add_noise=False):
         raise NotImplementedError("SHOULD NOT BE HERE: generate_train_samples")
@@ -257,7 +255,7 @@ class SampleObject:
     def generate_test_samples(self, n_samples, add_noise=False):
         raise NotImplementedError("SHOULD NOT BE HERE: generate_test_samples")
 
-######################################################################################################
+################################################################################
 class EnumEntity(SampleObject):
     def __init__(self, name):
         entity = entity_dict[name]
@@ -288,7 +286,7 @@ class EnumEntity(SampleObject):
 
         return result
 
-######################################################################################################
+################################################################################
 class ChoiceEntity(SampleObject):
     def __init__(self, name):
         entity = entity_dict[name]
@@ -320,14 +318,13 @@ class ChoiceEntity(SampleObject):
         for c, i in zip(self.children, range(0, len(self.children))):
             labels[c] = label_str[i]
 
-
         return [[labels[c], c] for c in labels], generate_labelled_classified_samples(samples, labels)
 
     def generate_test_samples(self, n_samples, add_noise=False):
         samples = self.generate_samples(n_samples)
         return generate_classified_samples(samples)
 
-######################################################################################################
+################################################################################
 class CompoundEntity(SampleObject):
     def __init__(self, name):
         self.name = name
@@ -382,7 +379,7 @@ class CompoundEntity(SampleObject):
         samples = self.generate_samples(n_samples)
         return generate_unlabelled_sample(samples)
 
-######################################################################################################
+################################################################################
 class TemplateEntity(SampleObject):
     def __init__(self, name):
         entity = entity_dict[name]
@@ -455,7 +452,7 @@ class Template(SampleObject):
         return generate_unlabelled_sample(samples)
 
 
-######################################################################################################
+################################################################################
 load_all_entity()
 
 def __create_entity(name):
@@ -518,7 +515,7 @@ def make_template_training_artifacts(template_name, parent_name, n_train=1000, n
     template = Template(template_name, parent_name)
     do_generate_artifacts(template, n_train, n_test, noise)
 
-
+################################################################################
 make_template_training_artifacts('centered-range', 'any-date', 10000)
 make_template_training_artifacts('range', 'any-date', 10000)
 make_template_training_artifacts('or-list', 'any-date', 10000)
@@ -529,7 +526,7 @@ make_template_training_artifacts('range', 'any-time', 10000)
 
 make_entity_training_artifacts('any-time', 10000, 100)
 make_entity_training_artifacts('any-date', 10000, 100)
-make_entity_training_artifacts('book-ticket', 20000, 100, noise=True)
+make_entity_training_artifacts('book-ticket', 20000, 100)
 make_entity_training_artifacts('time', 20000, 100)
 make_entity_training_artifacts('date', 20000, 100)
 make_entity_training_artifacts('regular-day', 10000, 100)

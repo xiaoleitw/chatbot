@@ -14,7 +14,8 @@
     "parameters" : [ "item" ],
     "patterns": [
       [ { "once" : "@{item}" }, { "many" : "，@{item}" }, { "once": "或@{item}" }  ],
-      [ { "once" : "@{item}" }, { "many" : "，@{item}" }, { "once": "或者@{item}" } ]
+      [ { "once" : "@{item}" }, { "many" : "，@{item}" }, { "once": "或者@{item}" } ],
+      [ { "once" : "@{item}" }, { "many" : "@{item}" },   { "once": "或@{item}" }   ]
     ]
   },
 
@@ -25,7 +26,8 @@
     "patterns": [
       [ { "once" : "@{item}" }, { "many" : "，@{item}" }, { "once": "和@{item}" }   ],
       [ { "once" : "@{item}" }, { "many" : "，@{item}" }, { "once": "以及@{item}" } ],
-      [ { "once" : "@{item}" }, { "many" : "，@{item}" }, { "once": "还有@{item}" } ]
+      [ { "once" : "@{item}" }, { "many" : "，@{item}" }, { "once": "还有@{item}" } ],
+      [ { "once" : "@{item}" }, { "many" : "@{item}" },   { "once": "和@{item}" }   ]
     ]
   },
 
