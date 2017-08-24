@@ -179,7 +179,7 @@ def generate_sample_by_template(template_name, data_list, n_samples):
 
     return template_name, samples[:n_samples]
 
-label_str = ['A', 'B', 'C', 'D', 'F', 'G', 'H','I','J','K','L','M','N','P','Q','R']
+label_str = ['A', 'B', 'C', 'D', 'F', 'G', 'H','I','J','K','L','M','N','P','Q','R','S','T','U','V','W','X','Y','Z']
 
 def generate_unlabelled_sample(samples):
     all_samples = []
@@ -523,8 +523,10 @@ make_entity_training_artifacts('open-door', 1000, 100)
 make_entity_training_artifacts('close-door', 1000, 100)
 make_entity_training_artifacts('open-window', 1000, 100)
 make_entity_training_artifacts('close-window', 1000, 100)
+make_entity_training_artifacts('adjust-window-up', 1000, 100)
+make_entity_training_artifacts('adjust-window-down', 1000, 100)
 
-'''
+
 make_template_training_artifacts('centered-range', 'any-date', 10000)
 make_template_training_artifacts('range', 'any-date', 10000)
 make_template_training_artifacts('or-list', 'any-date', 10000)
@@ -542,7 +544,6 @@ make_entity_training_artifacts('regular-day', 10000, 100)
 make_entity_training_artifacts('regular-month', 10000, 100)
 make_entity_training_artifacts('general-city', 10000, 100)
 make_entity_training_artifacts('province-city', 10000, 100)
-'''
 
 make_entity_training_artifacts('play-music', 10000, 100)
 make_entity_training_artifacts('entry', 20000, 100)

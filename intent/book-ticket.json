@@ -22,6 +22,7 @@
       "查一下@{date}从@{from}至@{to}的@{ticket}",
       "查下@{date}到@{to}的@{ticket}",
       "问下@{date}去@{to}的@{ticket}",
+      "@{date}飞往@{to}的@{ticket}",
       "看下@{date}去@{to}的@{ticket}",
       "看下有@{date}去@{to}的@{ticket}吗",
       "查下@{date}@{from}至@{to}的@{ticket}",

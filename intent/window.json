@@ -7,6 +7,7 @@
     ],
     "patterns" : [
       "打开@{window}",
+      "打开@{window}，太闷了",
       "把@{window}打开一下",
       "开一下@{window}",
       "请把@{window}打开",
@@ -27,6 +28,38 @@
       "请把@{window}关上",
       "帮我关上@{window}",
       "关@{window}"
+    ]
+  },
+  {
+    "entity" : "adjust-window-up",
+    "class"  : "intent",
+    "compound" : [
+      { "name": "window", "type":"window", "required":true, "priority":0 }
+    ],
+    "patterns" : [
+      "把@{window}开大一点",
+      "把@{window}调低点",
+      "@{window}开得太小了",
+      "@{window}开得有点小",
+      "@{window}开大",
+      "开大@{window}"
+    ]
+  },
+  {
+    "entity" : "adjust-window-down",
+    "class"  : "intent",
+    "compound" : [
+      { "name": "window", "type":"window", "required":true, "priority":0 }
+    ],
+    "patterns" : [
+      "把@{window}开小一点",
+      "把@{window}关小一点",
+      "把@{window}调高点",
+      "把@{window}收小",
+      "@{window}开得太大了",
+      "@{window}开得有点大",
+      "@{window}开到一半",
+      "关小@{window}"
     ]
   },
   {

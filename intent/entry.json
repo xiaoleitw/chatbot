@@ -10,7 +10,9 @@
       "open-door",
       "close-door",
       "open-window",
-      "close-window"
+      "close-window",
+      "adjust-window-down",
+      "adjust-window-up"
     ]
   }
 ]
