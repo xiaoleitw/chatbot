@@ -1,0 +1,40 @@
+[
+  {
+    "entity" : "open-window",
+    "class"  : "intent",
+    "compound" : [
+      { "name": "window", "type":"window", "required":true, "priority":0 }
+    ],
+    "patterns" : [
+      "打开@{window}",
+      "把@{window}打开一下",
+      "开一下@{window}",
+      "请把@{window}打开",
+      "帮我打开@{window}",
+      "开@{window}"
+    ]
+  },
+  {
+    "entity" : "close-window",
+    "class"  : "intent",
+    "compound" : [
+      { "name": "window", "type":"window", "required":true, "priority":0 }
+    ],
+    "patterns" : [
+      "关上@{window}",
+      "把@{window}关上",
+      "关一下@{window}",
+      "请把@{window}关上",
+      "帮我关上@{window}",
+      "关@{window}"
+    ]
+  },
+  {
+    "entity" : "window",
+    "enum" : {
+      "source" : "window.csv",
+      "column" : 1
+    },
+    "model":false
+  }
+]

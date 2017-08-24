@@ -39,6 +39,11 @@ def load_all_entity():
     for i in files:
         do_load_json(i)
 
+def load_all_intent():
+    files = glob.glob(intent_path + r'*.json')
+    for i in files:
+        do_load_json(i)
+
 ################################################################################
 def load_intent(file):
     return load_json(intent_path, file)
@@ -372,11 +377,11 @@ if len(sys.argv) != 3:
 sentence = sys.argv[2]
 
 load_all_entity()
+load_all_intent()
 
 #print(all_templates)
 
 intent_name = sys.argv[1]
-load_intent(intent_name)
 
 result = {'sentence' : sentence}
 result['paramters'] = get_parser(intent_name).parse_sentence(sentence, 0)

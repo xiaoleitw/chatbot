@@ -11,7 +11,6 @@
     "patterns": [
       "订张@{ticket}",
       "订@{ticket}",
-      "订@{ticket}",
       "我想订@{ticket}",
       "帮我订张@{ticket}",
       "帮我看看@{ticket}的情况",

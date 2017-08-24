@@ -1,15 +1,18 @@
 [
   {
-    "entity" : "singer-only",
-    "compound" : [
-      {"name":"singer", "type":"singer", "required":true}
-    ],
-    "patterns" : [
-      "帮我找首@{singer}的歌",
-      "我想听@{singer}的歌",
-      "找首@{singer}的歌",
-      "播放@{singer}的歌",
-      "播放@{singer}的音乐"
-    ]
+    "entity" : "singer",
+    "enum" : {
+      "source" : "singer.csv",
+      "column" : 1
+    },
+    "model":false
+  },
+  {
+    "entity" : "song",
+    "enum" : {
+      "source" : "songs.csv",
+      "column" : 1
+    },
+    "model":false
   }
 ]

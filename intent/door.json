@@ -1,0 +1,58 @@
+[
+  {
+    "entity" : "lock-door",
+    "class"  : "intent",
+    "enum" : {
+      "source" : "lock-door.csv",
+      "column" : 1
+    },
+    "model":false
+  },
+  {
+    "entity" : "unlock-door",
+    "class"  : "intent",
+    "enum" : {
+      "source" : "unlock-door.csv",
+      "column" : 1
+    },
+    "model":false
+  },
+  {
+    "entity" : "open-door",
+    "class"  : "intent",
+    "compound" : [
+      { "name": "door", "type":"door", "required":true, "priority":0 }
+    ],
+    "patterns" : [
+      "打开@{door}",
+      "把@{door}打开一下",
+      "开一下@{door}",
+      "请把@{door}打开",
+      "帮我打开@{door}",
+      "开门"
+    ]
+  },
+  {
+    "entity" : "close-door",
+    "class"  : "intent",
+    "compound" : [
+      { "name": "door", "type":"door", "required":true, "priority":0 }
+    ],
+    "patterns" : [
+      "关上@{door}",
+      "把@{door}关上",
+      "关一下@{door}",
+      "请把@{door}关上",
+      "帮我关上@{door}",
+      "关门"
+    ]
+  },
+  {
+    "entity" : "door",
+    "enum" : {
+      "source" : "door.csv",
+      "column" : 1
+    },
+    "model":false
+  }
+]

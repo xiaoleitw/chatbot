@@ -472,6 +472,7 @@ def create_entity(name):
     if name in entity_dict:
         return __create_entity(name)
 
+    print("no entity: ", name)
     exit(1)
 
 def do_write_csv_data(entity_name, samples, ty):
@@ -483,6 +484,7 @@ def do_write_csv_data(entity_name, samples, ty):
             my_writer.writerow(i)
 
 def write_samples(entity_name, samples, ty):
+    print("writing: " + entity_name)
     path = train_path + entity_name
     make_path(path)
     with open(path + "/" + ty + '.data', 'w', encoding='utf-8') as csvfile:
@@ -516,6 +518,13 @@ def make_template_training_artifacts(template_name, parent_name, n_train=1000, n
     do_generate_artifacts(template, n_train, n_test, noise)
 
 ################################################################################
+
+make_entity_training_artifacts('open-door', 1000, 100)
+make_entity_training_artifacts('close-door', 1000, 100)
+make_entity_training_artifacts('open-window', 1000, 100)
+make_entity_training_artifacts('close-window', 1000, 100)
+
+'''
 make_template_training_artifacts('centered-range', 'any-date', 10000)
 make_template_training_artifacts('range', 'any-date', 10000)
 make_template_training_artifacts('or-list', 'any-date', 10000)
@@ -533,6 +542,10 @@ make_entity_training_artifacts('regular-day', 10000, 100)
 make_entity_training_artifacts('regular-month', 10000, 100)
 make_entity_training_artifacts('general-city', 10000, 100)
 make_entity_training_artifacts('province-city', 10000, 100)
+'''
+
+make_entity_training_artifacts('play-music', 10000, 100)
+make_entity_training_artifacts('entry', 20000, 100)
 
 
 #entity = create_entity('book-ticket')

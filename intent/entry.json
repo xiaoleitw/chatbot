@@ -1,0 +1,16 @@
+[
+  {
+    "entity" : "entry",
+    "class"  : "intent",
+    "choice" : [
+      "book-ticket",
+      "play-music",
+      "unlock-door",
+      "lock-door",
+      "open-door",
+      "close-door",
+      "open-window",
+      "close-window"
+    ]
+  }
+]
