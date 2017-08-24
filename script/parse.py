@@ -7,6 +7,13 @@ import csv
 import json
 import glob
 import pprint
+from random import choice
+
+from prompt_toolkit import prompt
+from prompt_toolkit.history import InMemoryHistory
+from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
+
+history = InMemoryHistory()
 
 train_path = "../train/"
 entity_path = "../entity/"
@@ -128,6 +135,11 @@ class Parser:
         raise NotImplementedError("SHOULD NOT BE HERE: do_parse")
 
 
+    def verify(self, intent):
+        return True, intent
+        #raise NotImplementedError("SHOULD NOT BE HERE: verify")
+
+
 ################################################################################
 class IntentParser(Parser):
     def __init__(self, intent):
@@ -159,6 +171,14 @@ class CompoundIntentParser(IntentParser):
                     exit(1)
                 else:
                     self.children[field['name']]  = parser
+
+    def verify(self, intent):
+        if self.entity['class'] == 'intent':
+            for f in self.fields:
+                if f['name'] not in intent:
+                    return False, {'slot':{'type': f['type'], 'name':f['name']}, 'reply': choice(f['question'])}
+
+        return True, intent
 
     def deep_parse(self, data, sentence, pos):
         for child in self.children:
@@ -370,22 +390,61 @@ def get_parser(name):
 
     return get_entity_parser(name)
 
-###################################################################
-if len(sys.argv) != 3:
-        sys.exit(2)
+################################################################################
+def do_check_intent(intent, name):
+    s, r = get_parser(name).verify(intent)
+    if s:
+        pp.pprint({name : intent})
+    else:
+        #{'type': f['type'], 'reply': f['question']}
+        pp.pprint(r['reply'])
+        context['intent'] = intent
+        context['intent-name'] = name
+        context['slot'] = r['slot']
+        context['parser'].append(get_parser(r['slot']['type']))
+        #pp.pprint({name:intent})
 
-sentence = sys.argv[2]
+def check_intent(intent):
+    if len(intent) != 1:
+        print("this is not a intent")
+        exit(1)
+
+    for c in intent:
+        do_check_intent(intent[c], c)
+            #context['parser'].append()
+
+def fill_slot(result):
+    context['intent'][context['slot']['name']] = result
+
+    name   = context['intent-name']
+    intent = context['intent']
+
+    context['parser'] = context['parser'][:-1]
+    context['slot'] = ""
+    context['intent'] = None
+    context['intent-name'] = ""
+
+    do_check_intent(intent, name)
+
+################################################################################
 
 load_all_entity()
 load_all_intent()
-
-#print(all_templates)
-
-intent_name = sys.argv[1]
-
-result = {'sentence' : sentence}
-result['paramters'] = get_parser(intent_name).parse_sentence(sentence, 0)
+context = {'parser':[], 'intent':None, 'name':'', 'type':""}
 
 pp = pprint.PrettyPrinter(depth=10)
 
-pp.pprint(result)
+#print(all_templates)
+
+if __name__ == "__main__":
+    context['parser'].append(get_parser('entry'))
+
+    while True:
+        sentence = prompt('> ', history=history, auto_suggest=AutoSuggestFromHistory())
+        result = context['parser'][-1].parse_sentence(sentence, 0)
+        if context['intent'] == None:
+            check_intent(result)
+        else:
+            fill_slot(result)
+
+        #pp.pprint(result)

@@ -3,14 +3,16 @@
     "entity" : "play-music",
     "class"  : "intent",
     "compound" : [
-      {"name" : "singer",   "type":"singer",        "required" : false},
+      {"name" : "singer",   "type":"singer",        "required" : true, "priority":0, "question":["想听谁的歌？", "哪位歌手?"]},
       {"name" : "song",     "type":"song",          "required" : false}
     ],
     "patterns" : [
       "帮我找首@{singer}的歌",
       "我想听@{singer}的歌",
       "找下@{singer}的新歌",
-      "找下@{singer}的新专辑",
+      "找下@{singer}的专辑",
+      "播放@{singer}的专辑",
+      "我想听@{singer}的专辑",
       "找首@{singer}的歌",
       "播放@{singer}的歌",
       "播放@{singer}的音乐",
