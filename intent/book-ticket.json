@@ -16,6 +16,7 @@
       "帮我看看@{ticket}的情况",
       "我想订@{date}@{from}到@{to}的@{ticket}",
       "订@{date}@{from}至@{to}的@{ticket}",
+      "订张@{date}的@{ticket}",
       "帮我看看@{date}从@{from}到@{to}的@{ticket}",
       "帮我订张@{date}到@{to}的@{ticket}",
       "帮我订张@{from}到@{to}的@{ticket}",

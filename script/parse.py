@@ -82,6 +82,13 @@ class Parser:
     def get_name(self):
         return self.name
 
+    def add_new_segment(self, tag, container, sentence, start, pos, end):
+        if tag != 'O' and start < end:
+            if tag[-1] == 'E':
+                tag = tag[:-1]
+            #print(tag, "'" + sentence[start:end] + "'")
+            container(tag, get_param(sentence, start, pos, end))
+
     ############################################################################
     def parse_content(self, sentence, pos, container):
         size = self.tagger.size()
@@ -90,18 +97,23 @@ class Parser:
 
         for i in range(0, size):
             new_tag = self.tagger.y2(i)
-            if len(new_tag) > 0 and new_tag[-1] == 'E':
-                new_tag = new_tag[:-1]
+            #if len(new_tag) > 0 and new_tag[-1] == 'E':
+            #    new_tag = new_tag[:-1]
+            if new_tag[-1] == 'E':
+                end = i
+                if new_tag[:-1] == tag:
+                    end += 1
 
-            if tag != new_tag:
-                if tag != 'O':
-                    container(tag, get_param(sentence, start, pos, i))
-
-                tag = new_tag
+                self.add_new_segment(tag, container, sentence, start, pos, end)
+                start = end
+            elif tag != new_tag:
+                self.add_new_segment(tag, container, sentence, start, pos, i)
                 start = i
 
-        if tag != 'O':
-            container(tag, get_param(sentence, start, pos, size))
+            tag = new_tag
+
+        self.add_new_segment(tag, container, sentence, start, pos, size)
+
             #container(tag, (pos + start, size - start))
             #@result[self.labels[tag]] = (pos + start, size - start)
 
