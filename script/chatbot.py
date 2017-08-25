@@ -322,7 +322,7 @@ class TemplateParser(Parser):
         if not self.parser:
             return values
 
-        return [self.__parse(sentence, pos, i) for i in values]
+        return list(filter(lambda x: x != None, [self.__parse(sentence, pos, i) for i in values]))
 
     def handle_dict(self, sentence, pos):
         data = self.parse_dict(sentence, pos)
@@ -332,6 +332,11 @@ class TemplateParser(Parser):
         for c in data:
             v = data[c][0]
             data[c] = self.parser.parse_sentence(sentence[v[0] - pos : v[0] - pos + v[1]], v[0])
+            if not data[c]:
+                del data[c]
+
+        if len(data) == 0:
+            return None
 
         return data
 
@@ -405,9 +410,16 @@ def do_check_intent(intent, name):
         context['parser'].append(get_parser(r['slot']['type']))
         #pp.pprint({name:intent})
 
+unknown_reply = [
+    "我好像不太明白你的意思",
+    "笨蛋，能把话说的清楚点吗！",
+    "别淘气，快说正事！",
+    "别闹了好吗？"
+]
+
 def check_intent(intent):
     if not intent or len(intent) != 1:
-        print("<: 我不太明白你的意思。")
+        print("<: " + choice(unknown_reply))
         return
 
     for c in intent:
@@ -416,7 +428,7 @@ def check_intent(intent):
 
 def fill_slot(result):
     if result == None:
-        print("<: 我不太明白。" + context['reply'])
+        print("<: " + choice(unknown_reply) +  context['reply'])
         return
 
     context['intent'][context['slot']['name']] = result
