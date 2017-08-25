@@ -90,18 +90,17 @@ class Parser:
 
         for i in range(0, size):
             new_tag = self.tagger.y2(i)
-            if tag != new_tag:
-                if tag != 'O' and tag[-1] != 'E':
-                    end = i
-                    if new_tag[-1] == 'E':
-                        end = i + 1
+            if len(new_tag) > 0 and new_tag[-1] == 'E':
+                new_tag = new_tag[:-1]
 
-                    container(tag, get_param(sentence, start, pos, end))
-                    #result[self.labels[tag]] = (pos + start, i - start)
+            if tag != new_tag:
+                if tag != 'O':
+                    container(tag, get_param(sentence, start, pos, i))
+
                 tag = new_tag
                 start = i
 
-        if tag != 'O' and tag[-1] != 'E':
+        if tag != 'O':
             container(tag, get_param(sentence, start, pos, size))
             #container(tag, (pos + start, size - start))
             #@result[self.labels[tag]] = (pos + start, size - start)
