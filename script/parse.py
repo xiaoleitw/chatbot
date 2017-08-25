@@ -385,7 +385,7 @@ def do_check_intent(intent, name):
         pp.pprint({name : intent})
     else:
         #{'type': f['type'], 'reply': f['question']}
-        pp.pprint(r['reply'])
+        print("<: " + r['reply'])
         context['reply'] = r['reply']
         context['intent'] = intent
         context['intent-name'] = name
@@ -395,7 +395,7 @@ def do_check_intent(intent, name):
 
 def check_intent(intent):
     if not intent or len(intent) != 1:
-        print("我不太明白你的意思。")
+        print("<: 我不太明白你的意思。")
         return
 
     for c in intent:
@@ -404,7 +404,7 @@ def check_intent(intent):
 
 def fill_slot(result):
     if result == None:
-        print("我不太明白。" + context['reply'])
+        print("<: 我不太明白。" + context['reply'])
         return
 
     context['intent'][context['slot']['name']] = result
@@ -433,7 +433,7 @@ if __name__ == "__main__":
     context['parser'].append(get_parser('entry'))
 
     while True:
-        sentence = prompt('> ', history=history, auto_suggest=AutoSuggestFromHistory())
+        sentence = prompt(':> ', history=history, auto_suggest=AutoSuggestFromHistory())
         sentence.strip()
         if sentence == 'quit': exit(0)
 

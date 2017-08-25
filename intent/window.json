@@ -11,6 +11,7 @@
       "把@{window}打开一下",
       "开一下@{window}",
       "请把@{window}打开",
+      "有点闷，把@{window}打开吧",
       "帮我打开@{window}",
       "开@{window}"
     ]
@@ -27,6 +28,7 @@
       "关一下@{window}",
       "请把@{window}关上",
       "帮我关上@{window}",
+      "太冷了，还是把@{window}关上吧",
       "关@{window}"
     ]
   },
@@ -42,6 +44,7 @@
       "@{window}开得太小了",
       "@{window}开得有点小",
       "@{window}开大",
+      "有点闷，把${window}开大点",
       "开大@{window}"
     ]
   },
@@ -59,7 +62,8 @@
       "@{window}开得太大了",
       "@{window}开得有点大",
       "@{window}开到一半",
-      "关小@{window}"
+      "关小@{window}",
+      "有点冷，把${window}开小点"
     ]
   },
   {
