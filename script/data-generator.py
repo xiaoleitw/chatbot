@@ -107,7 +107,7 @@ def read_chinese():
 noise_lib = read_chinese()
 
 def make_train_noise():
-    num = choice(range(1,5,1))
+    num = choice(range(1,20,1))
     return [[choice(noise_lib), 'O'] for i in range(num)]
 
 def make_test_noise():
@@ -236,10 +236,22 @@ def generate_classified_samples(samples):
     return result
 
 def add_train_noise(samples):
-    return [make_train_noise() + sample + make_train_noise() for sample in samples]
+    n = len(samples)
+    samples += [make_train_noise() for _ in range(0, n // 10)]
+
+    random.shuffle(samples)
+
+    return samples[:n]
+
+    #return [make_train_noise() + sample + make_train_noise() for sample in samples]
 
 def add_test_noise(samples):
-    return [make_test_noise() + sample + make_test_noise() for sample in samples]
+    n = len(samples)
+    samples += [make_test_noise() for _ in range(0, n // 10)]
+
+    random.shuffle(samples)
+
+    return samples[:n]
 
 ################################################################################
 class SampleObject:
@@ -535,8 +547,8 @@ make_template_training_artifacts('and-list', 'any-date', 10000)
 make_template_training_artifacts('centered-range', 'any-time', 10000)
 make_template_training_artifacts('range', 'any-time', 10000)
 
-make_entity_training_artifacts('any-time', 10000, 100)
-make_entity_training_artifacts('any-date', 10000, 100)
+make_entity_training_artifacts('any-time', 10000, 100, noise=True)
+make_entity_training_artifacts('any-date', 10000, 100, noise=True)
 make_entity_training_artifacts('book-ticket', 20000, 100)
 make_entity_training_artifacts('time', 20000, 100)
 make_entity_training_artifacts('date', 20000, 100)
@@ -546,7 +558,7 @@ make_entity_training_artifacts('general-city', 10000, 100)
 make_entity_training_artifacts('province-city', 10000, 100)
 
 make_entity_training_artifacts('play-music', 10000, 100)
-make_entity_training_artifacts('entry', 20000, 100)
+make_entity_training_artifacts('entry', 20000, 100, noise=True)
 
 
 #entity = create_entity('book-ticket')

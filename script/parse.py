@@ -191,6 +191,12 @@ class CompoundIntentParser(IntentParser):
                 s = start - pos
                 data[child] = parser.parse_sentence(sentence[s : s + l], start)
 
+                if not data[child]:
+                    del data[child]
+
+        if len(data) == 0:
+            return None
+
         return data
 
 ###############################################################################
@@ -211,12 +217,13 @@ class ChoiceIntentParser(IntentParser):
 
     def deep_parse(self, data, sentence, pos):
         if len(data) != 1:
-            print("ChoiceIntentParser confused: ", data, sentence)
-            exit(1)
+            return None
 
         for c in data:
             if c in self.children:
                 data[c] = self.children[c].parse_sentence(sentence, pos)
+                if not data[c]:
+                    return None
 
         return data
 
@@ -242,8 +249,8 @@ class TemplateIntentParser(IntentParser):
 
     def deep_parse(self, data, sentence, pos):
         if len(data) != 1:
-            print("TemplateIntentParser confused: ", data, sentence)
-            exit(1)
+            #print("TemplateIntentParser confused: ", data, sentence)
+            return None
 
         for c in data:
             if c in self.children:
@@ -251,6 +258,11 @@ class TemplateIntentParser(IntentParser):
             else:
                s, l = data[c][0]
                data[c] = self.parser.parse_sentence(sentence[:l], pos)
+
+            if data[c] == None:
+                del dict[c]
+
+        if len(data[c]) == 0: return None
 
         return data
 
@@ -320,34 +332,6 @@ class TemplateParser(Parser):
             return self.handle_dict(sentence, pos)
 
 ###################################################################
-def handle_choice(entity, data, sentence, pos):
-    if len(data) != 1:
-        print("handle_choice confused: ", data, sentence)
-        exit(1)
-
-    for c in data:
-        child = all_entities[c]
-        if 'model' not in child or child['model']:
-            data[c] = parse_sentence(child, sentence, pos)
-
-###################################################################
-def check_intent_args(entity, data):
-    fields = filter(lambda x: x['required'], entity['compound'])
-    fields = sorted(fields, key=lambda x: x['priority'])
-    for field in fields:
-        if field['name'] not in data:
-            print(field['question'], data)
-            sys.exit(1)
-
-###################################################################
-def check_entity_args(entity, data):
-    fields = filter(lambda x: 'required' in x and x['required'], entity['compound'])
-    for field in fields:
-        if field['name'] not in data:
-            print(field['name'], "missing:", data)
-            sys.exit(1)
-
-###################################################################
 all_entity_parser = {}
 all_template_parser = {}
 
@@ -391,12 +375,18 @@ def get_parser(name):
 
 ################################################################################
 def do_check_intent(intent, name):
+    entity = all_entities[name]
+    if 'model' in entity and not entity['model']:
+        pp.pprint({name : intent})
+        return
+
     s, r = get_parser(name).verify(intent)
     if s:
         pp.pprint({name : intent})
     else:
         #{'type': f['type'], 'reply': f['question']}
         pp.pprint(r['reply'])
+        context['reply'] = r['reply']
         context['intent'] = intent
         context['intent-name'] = name
         context['slot'] = r['slot']
@@ -404,15 +394,19 @@ def do_check_intent(intent, name):
         #pp.pprint({name:intent})
 
 def check_intent(intent):
-    if len(intent) != 1:
-        print("this is not a intent")
-        exit(1)
+    if not intent or len(intent) != 1:
+        print("我不太明白你的意思。")
+        return
 
     for c in intent:
         do_check_intent(intent[c], c)
             #context['parser'].append()
 
 def fill_slot(result):
+    if result == None:
+        print("我不太明白。" + context['reply'])
+        return
+
     context['intent'][context['slot']['name']] = result
 
     name   = context['intent-name']
@@ -440,10 +434,14 @@ if __name__ == "__main__":
 
     while True:
         sentence = prompt('> ', history=history, auto_suggest=AutoSuggestFromHistory())
-        result = context['parser'][-1].parse_sentence(sentence, 0)
-        if context['intent'] == None:
-            check_intent(result)
-        else:
-            fill_slot(result)
+        sentence.strip()
+        if sentence == 'quit': exit(0)
+
+        if len(sentence) > 0:
+           result = context['parser'][-1].parse_sentence(sentence, 0)
+           if context['intent'] == None:
+              check_intent(result)
+           else:
+              fill_slot(result)
 
         #pp.pprint(result)
