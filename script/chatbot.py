@@ -70,7 +70,7 @@ def get_param(sentence, start, pos, end):
     return ((s, l), sentence[start:end])
 
 ################################################################################
-class Parser:
+class ModelParser:
     def __init__(self, name):
         model_path = train_path + name + "/"
         which_model = model_path + "model"
@@ -139,8 +139,20 @@ class Parser:
         # parse and change internal stated as 'parsed'
         self.tagger.parse()
 
-        return self.do_parse(sentence, pos)
+        return self.get_provided_paremeters(self.do_parse(sentence, pos))
 
+    def get_provided_paremeters(self, data):
+        if not data: return None
+
+        keys = list(filter(lambda k: data[k] != None, data))
+
+        if len(keys) == 0: return None
+
+        result = {}
+        for k in keys:
+            result[k] = data[k]
+
+        return result
 
     def do_parse(self, sentence, pos):
         raise NotImplementedError("SHOULD NOT BE HERE: do_parse")
@@ -152,7 +164,7 @@ class Parser:
 
 
 ################################################################################
-class IntentParser(Parser):
+class IntentParser(ModelParser):
     def __init__(self, intent):
         super().__init__(intent['entity'])
         self.entity = intent
@@ -203,13 +215,9 @@ class CompoundIntentParser(IntentParser):
                 s = start - pos
                 data[child] = parser.parse_sentence(sentence[s : s + l], start)
 
-                if not data[child]:
-                    del data[child]
-
-        if len(data) == 0:
-            return None
 
         return data
+
 
 ###############################################################################
 class ChoiceIntentParser(IntentParser):
@@ -234,8 +242,8 @@ class ChoiceIntentParser(IntentParser):
         for c in data:
             if c in self.children:
                 data[c] = self.children[c].parse_sentence(sentence, pos)
-                if not data[c]:
-                    return None
+                if not data[c] and self.entity['class'] == 'intent':
+                    data[c] = {}
 
         return data
 
@@ -271,20 +279,14 @@ class TemplateIntentParser(IntentParser):
                s, l = data[c][0]
                data[c] = self.parser.parse_sentence(sentence[:l], pos)
 
-            if data[c] == None:
-                del dict[c]
-
-        if len(data[c]) == 0: return None
-
         return data
 
 ###############################################################################
-class TemplateParser(Parser):
+class TemplateParser(ModelParser):
     def __init__(self, template, parent, parser):
         super().__init__(parent + "/" + template['template'])
         self.result_type = template['result-type']
         self.parser = parser
-
 
     def __parse_list(self, sentence, pos):
         result = []
@@ -332,11 +334,6 @@ class TemplateParser(Parser):
         for c in data:
             v = data[c][0]
             data[c] = self.parser.parse_sentence(sentence[v[0] - pos : v[0] - pos + v[1]], v[0])
-            if not data[c]:
-                del data[c]
-
-        if len(data) == 0:
-            return None
 
         return data
 
@@ -402,7 +399,7 @@ def do_check_intent(intent, name):
         pp.pprint({name : intent})
     else:
         #{'type': f['type'], 'reply': f['question']}
-        print("<: " + r['reply'])
+        print(reply_note, choice(question_prefix) + r['reply'])
         context['reply'] = r['reply']
         context['intent'] = intent
         context['intent-name'] = name
@@ -410,16 +407,27 @@ def do_check_intent(intent, name):
         context['parser'].append(get_parser(r['slot']['type']))
         #pp.pprint({name:intent})
 
+################################################################################
 unknown_reply = [
-    "我好像不太明白你的意思",
-    "笨蛋，能把话说的清楚点吗！",
-    "别淘气，快说正事！",
+    "我好像不太明白你的意思……",
+    "亲爱的，能把话说的清楚点吗？",
+    "别淘气，快说正事嘛……",
     "别闹了好吗？"
 ]
 
+question_prefix = [
+    "",
+    "好的，",
+    "没问题，",
+    "收到！"
+]
+
+prompt_note = "|>> "
+reply_note  = "<<|"
+################################################################################
 def check_intent(intent):
     if not intent or len(intent) != 1:
-        print("<: " + choice(unknown_reply))
+        print(reply_note, choice(unknown_reply))
         return
 
     for c in intent:
@@ -428,7 +436,7 @@ def check_intent(intent):
 
 def fill_slot(result):
     if result == None:
-        print("<: " + choice(unknown_reply) +  context['reply'])
+        print(reply_note, choice(unknown_reply), context['reply'])
         return
 
     context['intent'][context['slot']['name']] = result
@@ -457,7 +465,7 @@ if __name__ == "__main__":
     context['parser'].append(get_parser('entry'))
 
     while True:
-        sentence = prompt(':> ', history=history, auto_suggest=AutoSuggestFromHistory())
+        sentence = prompt(prompt_note, history=history, auto_suggest=AutoSuggestFromHistory())
         sentence.strip()
         if sentence == 'quit': exit(0)
 

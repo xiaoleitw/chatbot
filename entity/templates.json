@@ -15,7 +15,8 @@
     "patterns": [
       [ { "once" : "@{item}" }, { "many" : "，@{item}" }, { "once": "或@{item}" }  ],
       [ { "once" : "@{item}" }, { "many" : "，@{item}" }, { "once": "或者@{item}" } ],
-      [ { "once" : "@{item}" }, { "many" : "@{item}" },   { "once": "或@{item}" }   ]
+      [ { "once" : "@{item}" }, { "many" : "@{item}" },   { "once": "或@{item}" }   ],
+      [ { "once" : "@{item}" }, { "many" : "@{item}" },   { "once": "还是@{item}好呢" }]
     ]
   },
 
