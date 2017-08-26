@@ -532,11 +532,11 @@ def do_generate_artifacts(obj, n_train, n_test, noise=False, sample_noise=False)
     generate_train_samples(obj, n_train, noise, sample_noise)
     generate_test_samples(obj, n_test, noise, sample_noise)
 
-def make_entity_training_artifacts(entity_name, n_train, n_test, noise=False, sample_noise=False):
+def make_entity_training_artifacts(entity_name, n_train, n_test, noise=False, sample_noise=True):
     entity = create_entity(entity_name)
     do_generate_artifacts(entity, n_train, n_test, noise, sample_noise)
 
-def make_template_training_artifacts(template_name, parent_name, n_train=1000, n_test=10, noise=False, sample_noise=False):
+def make_template_training_artifacts(template_name, parent_name, n_train=1000, n_test=10, noise=False, sample_noise=True):
     template = Template(template_name, parent_name)
     do_generate_artifacts(template, n_train, n_test, noise, sample_noise)
 
@@ -548,16 +548,16 @@ def make_template_training_artifacts(template_name, parent_name, n_train=1000, n
 
 #print(["".join(s) for s in samples])
 
-make_entity_training_artifacts('open-door', 1000, 100)
-make_entity_training_artifacts('close-door', 1000, 100)
-make_entity_training_artifacts('open-window', 1000, 100)
-make_entity_training_artifacts('close-window', 1000, 100)
-make_entity_training_artifacts('adjust-window-up', 1000, 100)
-make_entity_training_artifacts('adjust-window-down', 1000, 100)
-make_entity_training_artifacts('play-music', 10000, 100)
-make_entity_training_artifacts('book-ticket', 20000, 100, sample_noise=True)
+make_entity_training_artifacts('open-door', 10000, 100)
+make_entity_training_artifacts('close-door', 10000, 100)
+make_entity_training_artifacts('open-window', 10000, 100)
+make_entity_training_artifacts('close-window', 10000, 100)
+make_entity_training_artifacts('adjust-window-up', 10000, 100)
+make_entity_training_artifacts('adjust-window-down', 10000, 100)
+make_entity_training_artifacts('play-music', 10000, 100, sample_noise=False)
+make_entity_training_artifacts('book-ticket', 20000, 100)
 
-make_entity_training_artifacts('entry', 30000, 1000, noise=True)
+make_entity_training_artifacts('entry', 20000, 1000, noise=True)
 
 make_template_training_artifacts('centered-range', 'any-date', 10000)
 make_template_training_artifacts('range', 'any-date', 10000)
@@ -567,16 +567,17 @@ make_template_training_artifacts('and-list', 'any-date', 10000)
 make_template_training_artifacts('centered-range', 'any-time', 10000)
 make_template_training_artifacts('range', 'any-time', 10000)
 
-make_entity_training_artifacts('any-time', 10000, 100, noise=True)
-make_entity_training_artifacts('any-date', 10000, 100, noise=True)
+make_entity_training_artifacts('any-time', 10000, 100, noise=True, sample_noise=False)
+make_entity_training_artifacts('any-date', 10000, 100, noise=True, sample_noise=False)
 
-make_entity_training_artifacts('time', 20000, 100)
-make_entity_training_artifacts('date', 20000, 100, noise=True)
-make_entity_training_artifacts('regular-day', 20000, 100, noise=True, sample_noise=True)
-make_entity_training_artifacts('regular-month', 20000, 100, noise=True, sample_noise=True)
-make_entity_training_artifacts('ticket', 1000, 100, noise=True, sample_noise=True)
-make_entity_training_artifacts('general-city', 10000, 100,  noise=True)
-make_entity_training_artifacts('province-city', 10000, 100, noise=True, sample_noise=True)
+make_entity_training_artifacts('time', 20000, 100, sample_noise=False)
+make_entity_training_artifacts('date', 20000, 100, noise=True, sample_noise=False)
+make_entity_training_artifacts('regular-day', 20000, 100, noise=True)
+make_entity_training_artifacts('regular-month', 20000, 100, noise=True)
+make_entity_training_artifacts('ticket', 1000, 100, noise=True)
+make_entity_training_artifacts('general-city', 10000, 100,  noise=True, sample_noise=False)
+make_entity_training_artifacts('province-city', 10000, 100, noise=True)
+make_entity_training_artifacts('window', 1000, 100)
 
 
 

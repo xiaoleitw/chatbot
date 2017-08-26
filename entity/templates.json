@@ -16,7 +16,7 @@
       [ { "once" : "@{item}" }, { "many" : "，@{item}" }, { "once": "或@{item}" }  ],
       [ { "once" : "@{item}" }, { "many" : "，@{item}" }, { "once": "或者@{item}" } ],
       [ { "once" : "@{item}" }, { "many" : "@{item}" },   { "once": "或@{item}" }   ],
-      [ { "once" : "@{item}" }, { "many" : "@{item}" },   { "once": "还是@{item}好呢" }]
+      [ { "once" : "@{item}" }, { "many" : "@{item}" },   { "once": "还是@{item}呢" }]
     ]
   },
 
@@ -28,7 +28,8 @@
       [ { "once" : "@{item}" }, { "many" : "，@{item}" }, { "once": "和@{item}" }   ],
       [ { "once" : "@{item}" }, { "many" : "，@{item}" }, { "once": "以及@{item}" } ],
       [ { "once" : "@{item}" }, { "many" : "，@{item}" }, { "once": "还有@{item}" } ],
-      [ { "once" : "@{item}" }, { "many" : "@{item}" },   { "once": "和@{item}" }   ]
+      [ { "once" : "@{item}" }, { "many" : "@{item}" },   { "once": "和@{item}" }  ],
+      [ { "once" : "@{item}" }, { "many" : "@{item}" },   { "once": "@{item}" }   ]
     ]
   },
 

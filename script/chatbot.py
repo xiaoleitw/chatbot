@@ -141,9 +141,7 @@ class ModelParser:
 
         return self.get_provided_paremeters(self.do_parse(sentence, pos))
 
-    def get_provided_paremeters(self, data):
-        if not data: return None
-
+    def get_provided_dict_paremeters(self, data):
         keys = list(filter(lambda k: data[k] != None, data))
 
         if len(keys) == 0: return None
@@ -153,6 +151,16 @@ class ModelParser:
             result[k] = data[k]
 
         return result
+
+    def get_provided_paremeters(self, data):
+        if not data: return None
+
+        if isinstance(data, dict):
+            return self.get_provided_dict_paremeters(data)
+        elif isinstance(data, list):
+            if len(data) == 0: return None
+
+        return data
 
     def do_parse(self, sentence, pos):
         raise NotImplementedError("SHOULD NOT BE HERE: do_parse")
