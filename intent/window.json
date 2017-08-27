@@ -32,6 +32,7 @@
       "关@{window}"
     ]
   },
+
   {
     "entity" : "adjust-window-up",
     "class"  : "intent",
@@ -61,17 +62,34 @@
       "把@{window}收小",
       "@{window}开得太大了",
       "@{window}开得有点大",
-      "@{window}开到一半",
       "关小@{window}",
       "把@{window}开小点"
     ]
   },
+
+  {
+    "entity" : "adjust-window",
+    "class"  : "intent",
+    "compound" : [
+      { "name": "window", "type":"window",      "required":true, "priority":0, "question":["请问要调整哪个窗户？"] },
+      { "name": "scale",  "type":"rough-scale", "required":true, "priority":1, "question":["把窗户调到多少？"]}
+    ],
+    "patterns" : [
+      "把@{window}开到@{scale}",
+      "把@{window}调到@{scale}"
+    ]
+  },
+
   {
     "entity" : "window",
     "enum" : {
       "source" : "window.csv",
       "column" : 1
     },
+    "extra-reply": [
+      "全部",
+      "所有"
+    ],
     "stict":true
   }
 ]

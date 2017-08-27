@@ -319,9 +319,10 @@ class TemplateParser(ModelParser):
         if not self.parser:
             return value
 
-        s = pos + value[0]
+        print("pos:", pos, "value:", value[0], value, sentence)
+        s = value[0][0] - pos
 
-        return self.parser.parse_sentence(sentence[s:s+value[1]], s)
+        return self.parser.parse_sentence(sentence[s:s+value[0][1]], s)
 
     def __parse(self, sentence, pos, value):
         s = value[0]
@@ -473,9 +474,9 @@ if __name__ == "__main__":
     context['parser'].append(get_parser('entry'))
 
     while True:
-        sentence = prompt(prompt_note, history=history, auto_suggest=AutoSuggestFromHistory())
-        sentence.strip()
-        if sentence == 'quit': exit(0)
+        sentence = prompt(prompt_note, history=history, auto_suggest=AutoSuggestFromHistory()).strip()
+
+        if sentence == 'bye': exit(0)
 
         if len(sentence) > 0:
            result = context['parser'][-1].parse_sentence(sentence, 0)

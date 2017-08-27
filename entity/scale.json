@@ -1,0 +1,36 @@
+[
+  {
+    "entity" : "rough-scale",
+    "templates": [
+      { "name" : "single",         "model" : false },
+      { "name" : "centered-range", "model" : true  }
+    ],
+    "source-type" : "scale"
+  },
+
+  {
+    "entity" : "scale",
+    "choice"   : [
+      "fraction",
+      "percent"
+    ]
+  },
+
+  {
+    "entity" : "fraction",
+    "enum"   : {
+      "source"  : "fraction.csv",
+      "column"  : 1
+    },
+    "model":false
+  },
+
+  {
+    "entity" : "percent",
+    "enum"   : {
+      "source"  : "percent.csv",
+      "column"  : 1
+    },
+    "model":false
+  }
+]

@@ -12,7 +12,8 @@
       "open-window",
       "close-window",
       "adjust-window-down",
-      "adjust-window-up"
+      "adjust-window-up",
+      "adjust-window"
     ]
   }
 ]
