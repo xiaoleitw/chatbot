@@ -28,7 +28,7 @@ def get_label(name):
 
     return 'O'
 
-def parse_sentence(sentence, label):
+def parse_sentence(tagger, sentence, label):
     global failed_sentence
 
     tagger.clear()
@@ -42,6 +42,9 @@ def parse_sentence(sentence, label):
     tag = 'O'
     start = 0
     tags = {}
+    if tagger.prob() < 0.8:
+        print(tagger.prob(), sentence)
+
     for i in range(0, tagger.size()):
         new_tag = tagger.y2(i)
         if tag != new_tag:
@@ -94,4 +97,5 @@ if __name__ == "__main__":
 
 
     for i in sentences:
-        parse_sentence(i, label)
+        parse_sentence(tagger, i, label)
+
