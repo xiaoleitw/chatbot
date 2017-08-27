@@ -1,17 +1,42 @@
 [
   {
     "entity" : "any-window",
-    "templates": [
-      { "name" : "single",         "model" : false },
-      { "name" : "and-list",       "model" : true  }
-    ],
-    "source-type" : "window"
+    "choice": [
+      "multi-window",
+      "specific-window",
+      "all-window"
+    ]
   },
 
   {
-    "entity" : "window",
+     "entity" : "all-window",
+     "enum" : {
+       "source" : "window.csv",
+       "column" : 1
+     },
+     "stict":true,
+     "patterns" : [
+       "@{this}窗",
+       "@{this}窗户",
+       "@{this}车窗",
+       "窗",
+       "窗户",
+       "车窗"
+     ]
+  },
+
+  {
+    "entity" : "multi-window",
+    "templates": [
+      { "name" : "and-list",         "model" : true }
+    ],
+    "source-type" : "specific-window"
+  },
+
+  {
+    "entity" : "specific-window",
     "enum" : {
-      "source" : "window.csv",
+      "source" : "specific-window.csv",
       "column" : 1
     },
     "stict":true,
@@ -19,10 +44,7 @@
       "@{this}窗",
       "@{this}窗户",
       "@{this}车窗",
-      "天窗",
-      "窗",
-      "窗户",
-      "车窗"
+      "天窗"
     ]
   }
 ]

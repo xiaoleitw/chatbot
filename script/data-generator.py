@@ -576,7 +576,7 @@ def make_template_training_artifacts(template_name, parent_name, n_train=1000, n
 
 #print(["".join(s) for s in samples])
 
-make_entity_training_artifacts('entry', 20000, 1000, noise=True)
+make_entity_training_artifacts('entry', 30000, 1000, noise=True)
 
 make_entity_training_artifacts('welcome', 100, 10)
 make_entity_training_artifacts('open-door', 10000, 100)
@@ -599,7 +599,8 @@ make_template_training_artifacts('centered-range', 'any-time', 10000)
 make_template_training_artifacts('range', 'any-time', 10000)
 
 make_template_training_artifacts('centered-range', 'rough-scale', 1000)
-make_template_training_artifacts('and-list', 'any-window', 1000)
+
+make_template_training_artifacts('and-list', 'multi-window', 1000)
 
 make_entity_training_artifacts('any-time', 10000, 100, noise=True, sample_noise=False)
 make_entity_training_artifacts('any-date', 10000, 100, noise=True, sample_noise=False)
@@ -612,8 +613,9 @@ make_entity_training_artifacts('regular-month', 20000, 100, noise=True)
 make_entity_training_artifacts('ticket', 1000, 100, noise=True)
 make_entity_training_artifacts('general-city', 10000, 100,  noise=True)
 make_entity_training_artifacts('province-city', 10000, 100, noise=True)
-make_entity_training_artifacts('window', 1000, 100)
+make_entity_training_artifacts('specific-window', 1000, 100)
 make_entity_training_artifacts('any-window', 1000, 100, noise=True)
+make_entity_training_artifacts('singer', 1000, 100, sample_noise=False)
 
 make_entity_training_artifacts('rough-scale', 1000, 100)
 make_entity_training_artifacts('scale', 1000, 100, noise=True)

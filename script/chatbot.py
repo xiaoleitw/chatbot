@@ -139,6 +139,13 @@ class ModelParser:
         # parse and change internal stated as 'parsed'
         self.tagger.parse()
 
+
+        if self.tagger.prob() < 0.9:
+           print(sentence, self.tagger.prob())
+
+        if self.tagger.prob() < 0.3:
+            return None
+
         return self.get_provided_paremeters(self.do_parse(sentence, pos))
 
     def get_provided_dict_paremeters(self, data):
