@@ -34,8 +34,7 @@
     "enum" : {
       "source" : "relative-day.csv",
       "column" : 1
-    },
-    "model":false
+    }
   },
 
   {

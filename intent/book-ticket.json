@@ -29,6 +29,8 @@
       "查下@{datetime}@{from}至@{to}的@{ticket}",
       "帮我看看到@{to}的@{ticket}",
       "帮我看看有没有@{datetime}去@{to}的@{ticket}",
+      "订张@{ticket}去@{to}@{datetime}",
+      "订张@{ticket}@{from}到@{to}@{datetime}",
       "@{datetime}从@{from}到@{to}的@{ticket}",
       "@{datetime}@{from}去@{to}的@{ticket}",
       "@{datetime}去@{to}的@{ticket}",

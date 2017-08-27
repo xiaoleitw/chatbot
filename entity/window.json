@@ -1,0 +1,28 @@
+[
+  {
+    "entity" : "any-window",
+    "templates": [
+      { "name" : "single",         "model" : false },
+      { "name" : "and-list",       "model" : true  }
+    ],
+    "source-type" : "window"
+  },
+
+  {
+    "entity" : "window",
+    "enum" : {
+      "source" : "window.csv",
+      "column" : 1
+    },
+    "stict":true,
+    "patterns" : [
+      "@{this}窗",
+      "@{this}窗户",
+      "@{this}车窗",
+      "天窗",
+      "窗",
+      "窗户",
+      "车窗"
+    ]
+  }
+]

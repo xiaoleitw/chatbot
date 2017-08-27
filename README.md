@@ -10,9 +10,9 @@
 安装CRF++时，其中的python bindings（在目录crf++3.5/python下)，必需用python3进行安装。
 
 
-# 快速开始
+## 快速开始
 
-1. 生成训练数据
+### 生成训练数据
 
 进入到script目录，执行:
 
@@ -20,7 +20,7 @@
 python3 train-data-generator.py
 ```
 
-2. 训练模型
+### 训练模型
 
 进入到script目录，执行：
 
@@ -28,7 +28,7 @@ python3 train-data-generator.py
 python3 train.py
 ```
 
-3. 测试模型
+### 测试模型
 
 进入到script目录，执行：
 

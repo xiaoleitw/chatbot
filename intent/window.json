@@ -3,33 +3,32 @@
     "entity" : "open-window",
     "class"  : "intent",
     "compound" : [
-      { "name": "window", "type":"window", "required":true, "priority":0, "question":["请问要打开哪个窗户？"] }
+      { "name": "window", "type":"any-window", "required":false }
     ],
     "patterns" : [
+      "开@{window}",
       "打开@{window}",
-      "打开@{window}，太闷了",
-      "把@{window}打开一下",
+      "开下@{window}",
       "开一下@{window}",
-      "请把@{window}打开",
-      "把@{window}打开吧",
-      "帮我打开@{window}",
-      "开@{window}"
+      "把@{window}打开",
+      "把@{window}开下",
+      "把@{window}开一下"
     ]
   },
   {
     "entity" : "close-window",
     "class"  : "intent",
     "compound" : [
-      { "name": "window", "type":"window", "required":true, "priority":0, "question":["请问要关上哪个窗户？"] }
+      { "name": "window", "type":"any-window", "required":false }
     ],
     "patterns" : [
+      "关@{window}",
       "关上@{window}",
-      "把@{window}关上",
+      "关下@{window}",
       "关一下@{window}",
-      "请把@{window}关上",
-      "帮我关上@{window}",
-      "还是把@{window}关上吧",
-      "关@{window}"
+      "把@{window}关上",
+      "把@{window}关下",
+      "把@{window}关一下"
     ]
   },
 
@@ -37,7 +36,7 @@
     "entity" : "adjust-window-up",
     "class"  : "intent",
     "compound" : [
-      { "name": "window", "type":"window", "required":true, "priority":0, "question":["请问要把哪个窗户开大一点？"] }
+      { "name": "window", "type":"any-window", "required":false }
     ],
     "patterns" : [
       "把@{window}开大一点",
@@ -53,7 +52,7 @@
     "entity" : "adjust-window-down",
     "class"  : "intent",
     "compound" : [
-      { "name": "window", "type":"window", "required":true, "priority":0, "question":["请问要把哪个窗户开小一点？"] }
+      { "name": "window", "type":"any-window", "required":false}
     ],
     "patterns" : [
       "把@{window}开小一点",
@@ -63,6 +62,7 @@
       "@{window}开得太大了",
       "@{window}开得有点大",
       "关小@{window}",
+      "@{window}关小点",
       "把@{window}开小点"
     ]
   },
@@ -71,25 +71,12 @@
     "entity" : "adjust-window",
     "class"  : "intent",
     "compound" : [
-      { "name": "window", "type":"window",      "required":true, "priority":0, "question":["请问要调整哪个窗户？"] },
-      { "name": "scale",  "type":"rough-scale", "required":true, "priority":1, "question":["把窗户调到多少？"]}
+      { "name": "window", "type":"any-window",  "required":false },
+      { "name": "scale",  "type":"rough-scale", "required":true, "priority":1, "question":["调到多少？"]}
     ],
     "patterns" : [
       "把@{window}开到@{scale}",
       "把@{window}调到@{scale}"
     ]
-  },
-
-  {
-    "entity" : "window",
-    "enum" : {
-      "source" : "window.csv",
-      "column" : 1
-    },
-    "extra-reply": [
-      "全部",
-      "所有"
-    ],
-    "stict":true
   }
 ]

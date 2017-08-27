@@ -278,24 +278,52 @@ class EnumEntity(SampleObject):
         self.name = name
         if name not in csv_samples_dict:
             e = entity['enum']
-            csv_samples_dict[name] = read_csv(e['source'], e['column'])
+            csv_samples_dict[name] = {'in-context':read_csv(e['source'], e['column'])}
 
-    def generate_samples(self, n_samples):
-        return [choice(csv_samples_dict[self.name]) for i in range(n_samples)]
+            if 'patterns' in entity:
+                samples = []
+                for pattern in entity['patterns']:
+                    if '@{this}' in pattern:
+                        for i in csv_samples_dict[name]['in-context']:
+                            s = []
+                            for j in pattern:
+                                if j == '@{this}':
+                                    s.append(i)
+                                else:
+                                    s.append(j)
+                            samples.append("".join(s))
+                    else:
+                        samples.append("".join(pattern))
+
+                    csv_samples_dict[name]['out-context'] = samples
+            else:
+                csv_samples_dict[name]['out-context'] = csv_samples_dict[name]['in-context']
+
+    def generate_samples(self, n_samples, in_context=False):
+        result = [choice(csv_samples_dict[self.name]['out-context']) for i in range(n_samples)]
+
+        if in_context:
+            result += [choice(csv_samples_dict[self.name]['in-context']) for i in range(n_samples)]
+            random.shuffle(result)
+
+        return result[:n_samples]
 
     def generate_flat_samples(self, n_samples):
         return self.generate_samples(n_samples)
 
     def generate_train_samples(self, n_samples):
-        samples = self.generate_samples(n_samples)
+        samples = self.generate_samples(n_samples, in_context=True)
         result = []
         for sample in samples:
-            result.append([[c, 'A'] for c in sample])
+            data = [[c, 'A'] for c in sample]
+            data[-1][1] = 'AE'
+            result.append(data)
+
 
         return [['A', self.name]], result
 
     def generate_test_samples(self, n_samples):
-        samples = self.generate_samples(n_samples)
+        samples = self.generate_samples(n_samples, in_context=True)
         result = []
         for sample in samples:
             result.append([[c] for c in sample])
@@ -548,6 +576,8 @@ def make_template_training_artifacts(template_name, parent_name, n_train=1000, n
 
 #print(["".join(s) for s in samples])
 
+make_entity_training_artifacts('entry', 30000, 1000, noise=True)
+
 make_entity_training_artifacts('welcome', 100, 10)
 make_entity_training_artifacts('open-door', 10000, 100)
 make_entity_training_artifacts('close-door', 10000, 100)
@@ -559,8 +589,6 @@ make_entity_training_artifacts('adjust-window-down', 10000, 100)
 make_entity_training_artifacts('play-music', 10000, 100, sample_noise=False)
 make_entity_training_artifacts('book-ticket', 20000, 100)
 
-make_entity_training_artifacts('entry', 20000, 1000, noise=True)
-
 make_template_training_artifacts('centered-range', 'any-date', 10000)
 make_template_training_artifacts('range', 'any-date', 10000)
 make_template_training_artifacts('or-list', 'any-date', 10000)
@@ -570,9 +598,11 @@ make_template_training_artifacts('centered-range', 'any-time', 10000)
 make_template_training_artifacts('range', 'any-time', 10000)
 
 make_template_training_artifacts('centered-range', 'rough-scale', 1000)
+make_template_training_artifacts('and-list', 'any-window', 1000)
 
 make_entity_training_artifacts('any-time', 10000, 100, noise=True, sample_noise=False)
 make_entity_training_artifacts('any-date', 10000, 100, noise=True, sample_noise=False)
+make_entity_training_artifacts('relative-day', 1000, 100, noise=True)
 
 make_entity_training_artifacts('time', 20000, 100, sample_noise=False)
 make_entity_training_artifacts('date', 20000, 100, noise=True, sample_noise=False)
@@ -582,6 +612,8 @@ make_entity_training_artifacts('ticket', 1000, 100, noise=True)
 make_entity_training_artifacts('general-city', 10000, 100,  noise=True, sample_noise=False)
 make_entity_training_artifacts('province-city', 10000, 100, noise=True)
 make_entity_training_artifacts('window', 1000, 100)
+make_entity_training_artifacts('any-window', 1000, 100, noise=True)
+
 make_entity_training_artifacts('rough-scale', 1000, 100)
 make_entity_training_artifacts('scale', 1000, 100, noise=True)
 

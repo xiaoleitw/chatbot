@@ -261,7 +261,10 @@ class EnumIntentParser(IntentParser):
         super().__init__(intent)
 
     def deep_parse(self, data, sentence, pos):
-        return data
+        for c in data:
+            return data[c]
+
+        return None    
 
 ###############################################################################
 class TemplateIntentParser(IntentParser):
