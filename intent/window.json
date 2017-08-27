@@ -68,15 +68,32 @@
   },
 
   {
-    "entity" : "adjust-window",
+    "entity" : "scale-window-up",
     "class"  : "intent",
     "compound" : [
       { "name": "window", "type":"any-window",  "required":false },
       { "name": "scale",  "type":"rough-scale", "required":true, "priority":1, "question":["调到多少？"]}
     ],
     "patterns" : [
+      "把@{window}开@{scale}",
       "把@{window}开到@{scale}",
+      "把@{window}打开@{scale}",
       "把@{window}调到@{scale}"
+    ]
+  },
+
+  {
+    "entity" : "scale-window-down",
+    "class"  : "intent",
+    "compound" : [
+      { "name": "window", "type":"any-window",  "required":false },
+      { "name": "scale",  "type":"rough-scale", "required":true, "priority":1, "question":["调到多少？"]}
+    ],
+    "patterns" : [
+      "把@{window}关@{scale}",
+      "把@{window}关到@{scale}",
+      "把@{window}关闭@{scale}",
+      "把@{window}关上@{scale}"
     ]
   }
 ]

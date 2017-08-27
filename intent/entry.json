@@ -14,7 +14,8 @@
       "close-window",
       "adjust-window-down",
       "adjust-window-up",
-      "adjust-window"
+      "scale-window-up",
+      "scale-window-down"
     ]
   }
 ]

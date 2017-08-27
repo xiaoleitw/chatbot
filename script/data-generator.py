@@ -576,16 +576,17 @@ def make_template_training_artifacts(template_name, parent_name, n_train=1000, n
 
 #print(["".join(s) for s in samples])
 
-make_entity_training_artifacts('entry', 30000, 1000, noise=True)
+make_entity_training_artifacts('entry', 20000, 1000, noise=True)
 
 make_entity_training_artifacts('welcome', 100, 10)
 make_entity_training_artifacts('open-door', 10000, 100)
 make_entity_training_artifacts('close-door', 10000, 100)
 make_entity_training_artifacts('open-window', 10000, 100)
 make_entity_training_artifacts('close-window', 10000, 100)
-make_entity_training_artifacts('adjust-window',      10000, 100)
 make_entity_training_artifacts('adjust-window-up',   10000, 100)
 make_entity_training_artifacts('adjust-window-down', 10000, 100)
+make_entity_training_artifacts('scale-window-up',      10000, 100)
+make_entity_training_artifacts('scale-window-down',      10000, 100)
 make_entity_training_artifacts('play-music', 10000, 100, sample_noise=False)
 make_entity_training_artifacts('book-ticket', 20000, 100)
 
