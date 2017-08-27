@@ -1,17 +1,17 @@
 # chatbot
 
-警告：此项目尚处于概念验证期。有很多定义方式和实现方式都尚不完善和成熟，在随后的版本中可能会随时修改。
+**警告**：此项目尚处于概念验证期。有很多定义方式和实现方式都尚不完善和成熟，在随后的版本中可能会随时修改。
 
 如果你实在愿意当下就把玩一下，可按照本文档的简单说明进行尝试。
 
 ## 1. 安装
 
-系统：Linux 或 Mac。
+系统：`Linux` 或 `Mac`。
 
-1. 安装python3.5或更高版本。
-2. 下载和安装CRF++[http://taku910.github.io/crfpp/]。
+1. 安装1python 3.51或更高版本。
+2. 下载和安装`CRF++`[http://taku910.github.io/crfpp/]。
 
-安装CRF++时，其中的python bindings（在目录crf++3.5/python下)，必需用python3进行安装。
+安装`CRF++``时，其中的`python bindings`（在目录`crf++3.5/python`下)，必需用`python3`进行安装。
 
 
 ## 2. 快速开始
