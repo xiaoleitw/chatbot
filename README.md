@@ -67,57 +67,54 @@ python3 chatbot.py
 以下是一个例子：
 
 ```
-[
-  {
-    "entity" : "book-ticket",
-    "class"  : "intent",
-    "compound" : [
-      {
-        "name" : "datetime",
-        "type" : "datetime",
-        "required" : true,
-        "priority" : 2,
-        "question": [
-          "您要订哪天的票？",
-          "请问您哪天出发？"
-        ]
-      },
-      {
-        "name" : "from",
-        "type" : "general-city",
-        "required" : false
-      },
-      {
-        "name" : "to",
-        "type" : "general-city",
-        "required" : true,
-        "priority" : 1,
-        "question" : [
-          "请告我您要到达的城市",
-          "您要订到哪里的票？",
-          "您的目的地是哪里？",
-          "您要到哪个城市？"
-        ]
-      },
-      {
-        "name" : "ticket",
-        "type" : "ticket",
-        "required" : true,
-        "priority" : 0,
-        "question": [
-          "请问您要订什么票？
-          "]
-        }
-    ],
-    "patterns": [
-      "订张@{ticket}",
-      "订@{ticket}",
-      "我想订@{ticket}",
-      "帮我订张@{ticket}"
-    ]
-  }
-]
-
+{
+  "entity" : "book-ticket",
+  "class"  : "intent",
+  "compound" : [
+    {
+      "name" : "datetime",
+      "type" : "datetime",
+      "required" : true,
+      "priority" : 2,
+      "question": [
+        "您要订哪天的票？",
+        "请问您哪天出发？"
+      ]
+    },
+    {
+      "name" : "from",
+      "type" : "general-city",
+      "required" : false
+    },
+    {
+      "name" : "to",
+      "type" : "general-city",
+      "required" : true,
+      "priority" : 1,
+      "question" : [
+        "请告我您要到达的城市",
+        "您要订到哪里的票？",
+        "您的目的地是哪里？",
+        "您要到哪个城市？"
+      ]
+    },
+    {
+      "name" : "ticket",
+      "type" : "ticket",
+      "required" : true,
+      "priority" : 0,
+      "question": [
+        "请问您要订什么票？
+        "]
+      }
+  ],
+  "patterns": [
+    "订张@{ticket}",
+    "订@{ticket}",
+    "我想订@{ticket}",
+    "帮我订张@{ticket}"
+  ]
+}
 ```
 
 
