@@ -8,10 +8,10 @@
 
 系统：`Linux` 或 `Mac`。
 
-1. 安装1python 3.51或更高版本。
+1. 安装`python 3.5`或更高版本。
 2. 下载和安装`CRF++`[http://taku910.github.io/crfpp/]。
 
-安装`CRF++``时，其中的`python bindings`（在目录`crf++3.5/python`下)，必需用`python3`进行安装。
+安装`CRF++`时，其中的`python bindings`（在目录`crf++3.5/python`下)，必需用`python3`进行安装。
 
 
 ## 2. 快速开始
