@@ -3,6 +3,7 @@
     "entity" : "entry",
     "class"  : "intent",
     "choice" : [
+      "welcome",
       "book-ticket",
       "play-music",
       "unlock-door",

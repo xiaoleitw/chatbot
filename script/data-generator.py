@@ -548,6 +548,7 @@ def make_template_training_artifacts(template_name, parent_name, n_train=1000, n
 
 #print(["".join(s) for s in samples])
 
+make_entity_training_artifacts('welcome', 100, 10)
 make_entity_training_artifacts('open-door', 10000, 100)
 make_entity_training_artifacts('close-door', 10000, 100)
 make_entity_training_artifacts('open-window', 10000, 100)

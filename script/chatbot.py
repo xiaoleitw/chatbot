@@ -405,7 +405,12 @@ def do_check_intent(intent, name):
 
     s, r = get_parser(name).verify(intent)
     if s:
-        pp.pprint({name : intent})
+
+        if 'response' in entity and 'text' in entity['response']:
+            print(reply_note, choice(entity['response']['text']))
+        else:
+            pp.pprint({name : intent})
+
     else:
         #{'type': f['type'], 'reply': f['question']}
         print(reply_note, choice(question_prefix) + r['reply'])
@@ -428,11 +433,11 @@ question_prefix = [
     "",
     "好的，",
     "没问题，",
-    "收到！"
+    "收到，"
 ]
 
-prompt_note = "|>> "
-reply_note  = "<<|"
+prompt_note = "|-> "
+reply_note  = "<-|"
 ################################################################################
 def check_intent(intent):
     if not intent or len(intent) != 1:
