@@ -108,9 +108,9 @@ python3 chatbot.py
       "required" : true,
       "priority" : 0,
       "question": [
-        "请问您要订什么票？
-        "]
-      }
+        "请问您要订什么票？"
+      ]
+    }
   ],
   "patterns": [
     "订张@{ticket}",
