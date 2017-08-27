@@ -12,7 +12,7 @@
 
 ## 2. 快速开始
 
-### 生成训练数据
+### 2.1 生成训练数据
 
 进入到script目录，执行:
 
@@ -20,7 +20,7 @@
 python3 train-data-generator.py
 ```
 
-### 训练模型
+### 2.2 训练模型
 
 进入到script目录，执行：
 
@@ -28,7 +28,7 @@ python3 train-data-generator.py
 python3 train.py
 ```
 
-### 测试模型
+### 2.3 测试模型
 
 进入到script目录，执行：
 
@@ -42,7 +42,7 @@ python3 chatbot.py
 
 ## 3. 配置
 
-### 增加intent
+### 3.1 增加intent
 
 在`intent`目录下创建一个`json`文件，或在已有的`json`文件里添加一个`intent`配置。
 
@@ -118,7 +118,7 @@ python3 chatbot.py
 ```
 
 
-### 增加entity
+### 3.2 增加entity
 
 在`entity`目录下创建一个新的`json`文件，用来添加新的`entity`定义。或者在已有的`json`里添加。
 
