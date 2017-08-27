@@ -605,22 +605,18 @@ make_entity_training_artifacts('any-time', 10000, 100, noise=True, sample_noise=
 make_entity_training_artifacts('any-date', 10000, 100, noise=True, sample_noise=False)
 make_entity_training_artifacts('relative-day', 1000, 100, noise=True)
 
-make_entity_training_artifacts('time', 20000, 100, sample_noise=False)
+make_entity_training_artifacts('time', 20000, 100)
 make_entity_training_artifacts('date', 20000, 100, noise=True, sample_noise=False)
 make_entity_training_artifacts('regular-day', 20000, 100, noise=True)
 make_entity_training_artifacts('regular-month', 20000, 100, noise=True)
 make_entity_training_artifacts('ticket', 1000, 100, noise=True)
-make_entity_training_artifacts('general-city', 10000, 100,  noise=True, sample_noise=False)
+make_entity_training_artifacts('general-city', 10000, 100,  noise=True)
 make_entity_training_artifacts('province-city', 10000, 100, noise=True)
 make_entity_training_artifacts('window', 1000, 100)
 make_entity_training_artifacts('any-window', 1000, 100, noise=True)
 
 make_entity_training_artifacts('rough-scale', 1000, 100)
 make_entity_training_artifacts('scale', 1000, 100, noise=True)
-
-
-
-
 
 #entity = create_entity('book-ticket')
 #print(entity.generate_train_samples(1))
