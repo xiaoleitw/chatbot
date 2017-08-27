@@ -7,19 +7,19 @@
       {"name" : "song",     "type":"song",          "required" : false}
     ],
     "patterns" : [
-      "帮我找首@{singer}的歌吧",
-      "我想听@{singer}的歌",
+      "找首@{singer}的歌",
+      "找首@{singer}的歌",
+      "放首@{singer}的歌",
+      "播放@{singer}的歌",
+      "来首@{singer}的歌",
+      "听@{singer}的歌",
       "找下@{singer}的新歌",
       "找下@{singer}的专辑",
       "播放@{singer}的专辑",
-      "我想听@{singer}的专辑",
-      "找首@{singer}的歌呗",
-      "放首@{singer}的歌好吗",
-      "播放@{singer}的歌",
-      "来首@{singer}的歌吧",
-      "来首@{singer}的音乐吧",
+      "听@{singer}的专辑",
+      "来首@{singer}的音乐",
       "播放@{singer}的音乐",
-      "我想听@{singer}的@{song}",
+      "听@{singer}的@{song}",
       "播放@{singer}的@{song}"
     ]
   }

@@ -140,11 +140,11 @@ class ModelParser:
         self.tagger.parse()
 
 
-        if self.tagger.prob() < 0.9:
-           print(sentence, self.tagger.prob())
+        #if self.tagger.prob() < 0.9:
+        #   print(sentence, self.tagger.prob())
 
-        if self.tagger.prob() < 0.3:
-            return None
+        #if self.tagger.prob() < 0.3:
+        #    return None
 
         return self.get_provided_paremeters(self.do_parse(sentence, pos))
 

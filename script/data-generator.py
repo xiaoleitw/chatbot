@@ -72,6 +72,27 @@ def read_csv(file, column):
 
     return result
 
+redundant_prefix = [
+    "麻烦你",
+    "麻烦",
+    "请",
+    "能不能",
+    "帮我",
+    "我想",
+    "给我",
+    "能帮我",
+    "能帮我",
+    "能否帮我"
+]
+
+def remove_redundant(sentence):
+    for i in redundant_prefix:
+        if sentence.startswith(i):
+            sentence = sentence[len(i):]
+            print(sentence)
+
+    return sentence
+
 def do_load_json(file):
     with open(file, 'r', encoding='utf-8') as jsonfile:
         js = json.load(jsonfile)
@@ -79,6 +100,7 @@ def do_load_json(file):
             if 'entity' in obj:
                 entity_dict[obj['entity']] = obj
                 if 'patterns' in obj:
+                    obj['patterns'] = [remove_redundant(i) for i in obj['patterns']]
                     obj['patterns'] = [split_pattern(i) for i in obj['patterns']]
             elif 'template' in obj:
                 obj['patterns'] = process_patterns(obj['patterns'])
@@ -235,27 +257,31 @@ def generate_classified_samples(samples):
 
     return result
 
+max_sample_noise_len = 10
+max_noise_len        = 30
+noise_ratio          = 10
+
 def add_train_noise(samples):
     n = len(samples)
-    samples += [make_train_noise(20) for _ in range(0, n // 10)]
+    samples += [make_train_noise(max_noise_len) for _ in range(0, n // (100 // noise_ratio) )]
 
     random.shuffle(samples)
 
     return samples[:n]
 
 def add_train_sample_noise(samples):
-    return [make_train_noise(5) + sample + make_train_noise(5) for sample in samples]
+    return [make_train_noise(max_sample_noise_len) + sample + make_train_noise(max_sample_noise_len) for sample in samples]
 
 def add_test_noise(samples):
     n = len(samples)
-    samples += [make_test_noise(20) for _ in range(0, n // 10)]
+    samples += [make_test_noise(max_noise_len) for _ in range(0, n // (100 // noise_ratio))]
 
     random.shuffle(samples)
 
     return samples[:n]
 
 def add_test_sample_noise(samples):
-    return [make_test_noise(5) + sample + make_test_noise(5) for sample in samples]
+    return [make_test_noise(max_sample_noise_len) + sample + make_test_noise(max_sample_noise_len) for sample in samples]
 
 ################################################################################
 class SampleObject:
@@ -615,6 +641,8 @@ make_entity_training_artifacts('general-city', 10000, 100,  noise=True)
 make_entity_training_artifacts('province-city', 10000, 100, noise=True)
 make_entity_training_artifacts('specific-window', 1000, 100)
 make_entity_training_artifacts('any-window', 1000, 100, noise=True)
+make_entity_training_artifacts('multi-window', 1000, 100, noise=True)
+make_entity_training_artifacts('all-window', 1000, 100, noise=True)
 make_entity_training_artifacts('singer', 1000, 100, sample_noise=False)
 
 make_entity_training_artifacts('rough-scale', 1000, 100)
