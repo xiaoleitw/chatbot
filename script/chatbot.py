@@ -250,7 +250,7 @@ class ChoiceIntentParser(IntentParser):
         for c in data:
             if c in self.children:
                 data[c] = self.children[c].parse_sentence(sentence, pos)
-                if not data[c] and self.entity['class'] == 'intent':
+                if not data[c] and 'class' in self.entity and self.entity['class'] == 'intent':
                     data[c] = {}
 
         return data
@@ -264,7 +264,7 @@ class EnumIntentParser(IntentParser):
         for c in data:
             return data[c]
 
-        return None    
+        return None
 
 ###############################################################################
 class TemplateIntentParser(IntentParser):
